@@ -28,7 +28,7 @@ export default async function CategoriesPage() {
     { color: 'from-indigo-500 to-indigo-700', icon: 'ri-star-smile-line' },
   ];
 
-  const categories = categoriesData?.map((c, i) => {
+  const categories = ((categoriesData as any[]) || []).map((c, i) => {
     const style = palette[i % palette.length];
     return {
       ...c,
@@ -38,7 +38,7 @@ export default async function CategoriesPage() {
       // Optional: Fetch product count if needed, currently skipping for performance/simplicity
       productCount: 'Browse',
     };
-  }) || [];
+  });
 
   return (
     <div className="min-h-screen bg-white">
