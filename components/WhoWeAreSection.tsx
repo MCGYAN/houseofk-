@@ -17,7 +17,7 @@ export default function WhoWeAreSection() {
             </h2>
             <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
               <p>
-                <strong>TIWAA PERFUME STYLE HOUSE</strong> is your premier destination for perfumes, both wholesale and retail. Based in Satellite, Accra, we offer a curated range of fragrances at competitive prices for resellers and individual customers.
+                <strong>House of Elle</strong> is your premier destination for perfumes, both wholesale and retail. Based in Spintex Lashibi, Shalom Spot Junction, Accra, Ghana, we offer a curated range of fragrances at competitive prices for resellers and individual customers.
               </p>
               <p>
                 We focus on quality and value. Whether you're stocking up for your business or shopping for yourself, we handpick our perfumes to deliver genuine products and great prices.
@@ -38,8 +38,8 @@ export default function WhoWeAreSection() {
           <AnimatedSection className="order-1 lg:order-2 relative" delay={200}>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl relative group">
               <Image
-                src="/Whisk_743db4f33bd7ec08b0f46aec28e929cfdr.jpeg"
-                alt="TIWAA PERFUME STYLE HOUSE — Premium perfumes"
+                src="/house-of-elle-logo.png"
+                alt="House of Elle — Premium perfumes"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 50vw"

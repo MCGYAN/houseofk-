@@ -5,7 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -71,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     if (categories) {
       categoryPages = categories.map((category) => ({
-        url: `${baseUrl}/category/${category.slug}`,
+        url: `${baseUrl}/shop?category=${category.slug}`,
         lastModified: new Date(category.updated_at),
         changeFrequency: 'weekly' as const,
         priority: 0.6,

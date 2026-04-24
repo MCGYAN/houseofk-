@@ -8,33 +8,31 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#2563eb',
+  themeColor: '#C89B3C',
 };
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
 
-// Favicon & OG: uses tiwa logo.png from public
+// Favicon & OG assets from public
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "TIWAA PERFUME STYLE HOUSE | Perfumes Wholesale & Retail — Satellite, Accra",
-    template: "%s | TIWAA PERFUME STYLE HOUSE"
+    default: "House of Elle | Premium Women’s Fashion in Accra",
+    template: "%s | House of Elle"
   },
-  description: "I sell perfumes — wholesale and retail. Satellite, Accra. Call 054 501 0949 · WhatsApp 055 416 9992.",
+  description: "Shop premium women’s fashion at House of Elle. Discover stylish, modern outfits designed for confidence and elegance. Located in Accra, Ghana.",
   keywords: [
-    "TIWAA PERFUME STYLE HOUSE",
-    "perfumes Ghana",
-    "wholesale perfumes Accra",
-    "retail perfumes",
-    "Satellite Accra",
-    "fragrance Ghana",
-    "Ghana perfumes",
-    "Accra perfume shop"
+    "women’s fashion Ghana",
+    "boutique Accra",
+    "stylish outfits Ghana",
+    "ladies wear Accra",
+    "premium fashion Ghana",
+    "House of Elle"
   ],
-  authors: [{ name: "TIWAA PERFUME STYLE HOUSE" }],
-  creator: "TIWAA PERFUME STYLE HOUSE",
-  publisher: "TIWAA PERFUME STYLE HOUSE",
-  applicationName: "TIWAA PERFUME STYLE HOUSE",
+  authors: [{ name: "House of Elle" }],
+  creator: "House of Elle",
+  publisher: "House of Elle",
+  applicationName: "House of Elle",
   referrer: "origin-when-cross-origin",
   robots: {
     index: true,
@@ -49,16 +47,19 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/tiwa logo.png', sizes: 'any', type: 'image/png' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon/favicon.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon/favicon.ico', sizes: 'any' },
     ],
-    shortcut: '/tiwa logo.png',
-    apple: '/tiwa logo.png',
+    shortcut: '/favicon/favicon.ico',
+    apple: '/favicon/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'TIWAA PERFUME',
+    title: 'House of Elle',
   },
   formatDetection: {
     telephone: true,
@@ -72,24 +73,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GH",
     url: siteUrl,
-    title: "TIWAA PERFUME STYLE HOUSE | Perfumes Wholesale & Retail — Satellite, Accra",
-    description: "I sell perfumes — wholesale and retail. Satellite, Accra. Call 054 501 0949 · WhatsApp 055 416 9992.",
-    siteName: "TIWAA PERFUME STYLE HOUSE",
+    title: "House of Elle | Premium Women’s Fashion",
+    description: "Elevate your style with House of Elle.",
+    siteName: "House of Elle",
     images: [
       {
-        url: "/tiwa logo.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "TIWAA PERFUME STYLE HOUSE — Perfumes Wholesale & Retail",
+        alt: "House of Elle - Elevate Your Style",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TIWAA PERFUME STYLE HOUSE | Perfumes Wholesale & Retail",
-    description: "I sell perfumes — wholesale and retail. Satellite, Accra. Call 054 501 0949 · WhatsApp 055 416 9992.",
-    images: ["/tiwa logo.png"],
+    title: "House of Elle",
+    description: "Modern fashion for confident women.",
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: siteUrl,
@@ -108,25 +109,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-GH">
       <head>
         {/* PWA Meta Tags */}
-        <meta name="theme-color" content="#2563eb" />
+        <meta name="theme-color" content="#C89B3C" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="TIWAA PERFUME" />
+        <meta name="apple-mobile-web-app-title" content="House of Elle" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-TileColor" content="#2563eb" />
+        <meta name="msapplication-TileColor" content="#C89B3C" />
         <meta name="msapplication-tap-highlight" content="no" />
 
-        {/* Favicon from public folder */}
-        <link rel="icon" href="/tiwa logo.png" type="image/png" sizes="any" />
-        <link rel="shortcut icon" href="/tiwa logo.png" />
+        {/* Favicon from public/favicon */}
+        <link rel="icon" href="/favicon/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
 
-        {/* Apple Touch Icons from public */}
-        <link rel="apple-touch-icon" href="/tiwa logo.png" />
-        <link rel="apple-touch-startup-image" href="/tiwa logo.png" />
+        {/* Apple Touch Icons from public/favicon */}
+        <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+        <link rel="apple-touch-startup-image" href="/favicon/apple-touch-icon.png" />
 
+        <link rel="canonical" href={siteUrl} />
+        <meta name="robots" content="index,follow" />
+        <meta property="og:title" content="House of Elle | Premium Women’s Fashion" />
+        <meta property="og:description" content="Elevate your style with House of Elle." />
+        <meta property="og:image" content={`${siteUrl}/opengraph-image`} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="House of Elle" />
+        <meta name="twitter:description" content="Modern fashion for confident women." />
+        <meta name="twitter:image" content={`${siteUrl}/opengraph-image`} />
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
           rel="stylesheet"
@@ -134,32 +146,51 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router: fonts loaded in root layout apply to all pages */}
-        <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
-        {/* Structured Data - Organization */}
+        {/* Structured Data - Organization + LocalBusiness */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "TIWAA PERFUME STYLE HOUSE",
-              "url": siteUrl,
-              "logo": siteUrl + "/tiwa%20logo.png",
-              "description": "I sell perfumes — wholesale and retail. Satellite, Accra.",
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "GH",
-                "addressLocality": "Accra",
-                "streetAddress": "Satellite, Accra"
-              },
-              "telephone": "+233545010949",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "contactType": "customer service",
-                "telephone": "+233545010949",
-                "availableLanguage": "English"
-              }
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": `${siteUrl}#organization`,
+                  "name": "House of Elle",
+                  "url": siteUrl,
+                  "logo": `${siteUrl}/house-of-elle-logo.png`,
+                  "image": `${siteUrl}/house-of-elle-logo.png`,
+                  "description": "Premium women’s fashion and lifestyle boutique in Accra, Ghana.",
+                  "sameAs": [
+                    "https://www.instagram.com/houseof_elle",
+                    "https://www.tiktok.com/@houseof_elle"
+                  ],
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "customer service",
+                    "telephone": "+233553347531",
+                    "availableLanguage": "English",
+                    "areaServed": "GH"
+                  }
+                },
+                {
+                  "@type": "ClothingStore",
+                  "@id": `${siteUrl}#store`,
+                  "name": "House of Elle",
+                  "image": `${siteUrl}/house-of-elle-logo.png`,
+                  "url": siteUrl,
+                  "telephone": "+233553347531",
+                  "priceRange": "$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Spintex Lashibi, Shalom Spot Junction",
+                    "addressLocality": "Accra",
+                    "addressCountry": "GH"
+                  }
+                }
+              ]
             })
           }}
         />

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import LazyImage from './LazyImage';
 import { useCart } from '@/context/CartContext';
@@ -80,6 +80,13 @@ export default function ProductCard({
   const MAX_SWATCHES = 5;
 
   const formatPrice = (val: number) => `GH\u20B5${val.toFixed(2)}`;
+  const renderNameWithPlainAmpersand = (text: string) =>
+    text.split('&').map((part, index, arr) => (
+      <Fragment key={`${part}-${index}`}>
+        {part}
+        {index < arr.length - 1 && <span className="font-sans not-italic">&amp;</span>}
+      </Fragment>
+    ));
 
   return (
     <div className="group bg-transparent rounded-lg h-full flex flex-col hover-lift">
@@ -134,8 +141,8 @@ export default function ProductCard({
 
       <div className="flex flex-col flex-grow">
         <Link href={`/product/${slug}`}>
-          <h3 className="font-serif text-lg leading-tight text-gray-900 mb-1 group-hover:text-blue-800 transition-colors line-clamp-2">
-            {name}
+          <h3 className="font-serif text-[1.35rem] leading-[1.15] text-brand-black mb-1 group-hover:text-brand-gold transition-colors line-clamp-2">
+            {renderNameWithPlainAmpersand(name)}
           </h3>
         </Link>
 
@@ -158,19 +165,19 @@ export default function ProductCard({
               />
             ))}
             {colorVariants.length > MAX_SWATCHES && (
-              <span className="text-xs text-gray-400 ml-0.5">+{colorVariants.length - MAX_SWATCHES}</span>
+            <span className="text-xs text-brand-brown/60 ml-0.5">+{colorVariants.length - MAX_SWATCHES}</span>
             )}
           </div>
         )}
 
         <div className="flex items-baseline space-x-2 mb-2">
           {hasVariants && minVariantPrice ? (
-            <span className="text-gray-900 font-semibold">From {formatPrice(minVariantPrice)}</span>
+            <span className="font-sans text-brand-black font-semibold tracking-tight">From {formatPrice(minVariantPrice)}</span>
           ) : (
-            <span className="text-gray-900 font-semibold">{formatPrice(price)}</span>
+            <span className="font-sans text-brand-black font-semibold tracking-tight">{formatPrice(price)}</span>
           )}
           {originalPrice && (
-            <span className="text-sm text-gray-400 line-through">{formatPrice(originalPrice)}</span>
+            <span className="text-sm text-brand-brown/55 line-through">{formatPrice(originalPrice)}</span>
           )}
         </div>
 

@@ -43,8 +43,9 @@ export default async function CategoriesPage() {
   return (
     <div className="min-h-screen bg-white">
       <PageHero
+        eyebrow="Fragrance Families"
         title="Shop by Category"
-        subtitle="Browse our perfume categories"
+        subtitle="Explore House of Elle collections by scent profile, mood, and everyday lifestyle."
         backgroundImage="/Whisk_6f28ce8873000718f834bc0d63e3bc87dr.jpeg"
       />
 

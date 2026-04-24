@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --brand-royal-gold: #c89b3c;
+  --brand-deep-black: #0a0a0a;
+  --brand-warm-ivory: #f5ede4;
+  --brand-champagne-gold: #f8cfa4;
+  --brand-soft-nude: #d8a48f;
+  --brand-muted-brown: #6b4f3a;
+}
+
 /* ========================================
    ANIMATIONS & EFFECTS
    ======================================== */
@@ -99,11 +108,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 0 0 rgba(200, 155, 60, 0.4);
   }
 
   50% {
-    box-shadow: 0 0 20px 10px rgba(56, 189, 248, 0);
+    box-shadow: 0 0 20px 10px rgba(200, 155, 60, 0);
   }
 }
 
@@ -116,6 +125,18 @@
   100% {
     background-position: 200% 0;
   }
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--brand-royal-gold), #A47B30);
+  color: var(--brand-deep-black);
+  box-shadow: 0 4px 14px rgba(200, 155, 60, 0.4);
+  transition: all 0.3s ease;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #A47B30, var(--brand-royal-gold));
+  box-shadow: 0 6px 20px rgba(200, 155, 60, 0.6);
+  transform: translateY(-2px);
 }
 
 /* ========================================
@@ -295,7 +316,7 @@
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 20px rgba(200, 155, 60, 0.4);
 }
 
 /* ========================================
@@ -615,7 +636,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #0c4a6e 100%);
+  background: linear-gradient(135deg, #0a0a0a 0%, #6b4f3a 50%, #c89b3c 100%);
   animation: splashFadeOut 0.5s ease-out 1.5s forwards;
 }
 

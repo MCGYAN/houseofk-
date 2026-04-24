@@ -200,8 +200,9 @@ function ShopContent() {
   return (
     <main className="min-h-screen bg-white">
       <PageHero
+        eyebrow="House of Elle Collection"
         title="Shop All Products"
-        subtitle="Browse our range of perfumes and fragrances"
+        subtitle="Discover perfumes, body mists, diffusers, candles, and gift sets curated for retail and wholesale customers."
         backgroundImage="/Whisk_6ec7df94ec3ca85b49644810b7fab2ecdr.jpeg"
       />
 

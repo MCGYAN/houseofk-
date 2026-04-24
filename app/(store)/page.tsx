@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
@@ -13,11 +14,19 @@ import { usePageTitle } from '@/hooks/usePageTitle';
 export default function Home() {
   usePageTitle('');
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [homepageCategories, setHomepageCategories] = useState<any[]>([]);
 
   const [loading, setLoading] = useState(true);
 
   // Config State - Managed in Code
   const [currentSlide, setCurrentSlide] = useState(0);
+  const renderNameWithStyledAmpersand = (text: string) =>
+    text.split('&').map((part, index, arr) => (
+      <Fragment key={`${part}-${index}`}>
+        {part}
+        {index < arr.length - 1 && <span className="font-sans not-italic text-[0.9em] align-middle">&amp;</span>}
+      </Fragment>
+    ));
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,8 +48,8 @@ export default function Home() {
     banners?: Array<{ text: string; active: boolean }>;
   } = {
     hero: {
-      headline: 'TIWAA PERFUME STYLE HOUSE — Perfumes Wholesale & Retail',
-      subheadline: 'Curated fragrances at competitive prices. Satellite, Accra. For resellers and individual customers across Ghana.',
+      headline: 'House of Elle — Luxury Fragrances for Everyone',
+      subheadline: 'Shop perfumes, splashes, diffusers, scented candles, kids perfumes, body sprays, body butters, scented body lotions, and gift sets.',
       primaryButtonText: 'Shop Collections',
       primaryButtonLink: '/shop',
       secondaryButtonText: 'Our Story',
@@ -48,9 +57,9 @@ export default function Home() {
       // backgroundImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop' // Optional override
     },
     banners: [
-      { text: '🚚 Free delivery on orders over GH₵ 500 within Accra!', active: false },
-      { text: '✨ New stock arriving this weekend - Pre-order now!', active: false },
-      { text: '💳 Secure payments via Mobile Money & Card', active: false }
+      { text: '📍 Visit us at Spintex Lashibi, Shalom Spot Junction', active: false },
+      { text: '📞 Call 0553347531 for wholesale & retail orders', active: false },
+      { text: '✨ New arrivals in perfumes, diffusers, candles, and gift sets', active: false }
     ]
   };
 
@@ -68,6 +77,19 @@ export default function Home() {
 
         if (productsError) throw productsError;
         setFeaturedProducts(productsData || []);
+
+        const { data: categoriesData, error: categoriesError } = await supabase
+          .from('categories')
+          .select('id, name, slug, image_url, description, metadata, created_at')
+          .eq('status', 'active')
+          .order('created_at', { ascending: false });
+
+        if (categoriesError) throw categoriesError;
+
+        const activeCategories = categoriesData || [];
+        const featuredCategories = activeCategories.filter((category: any) => category?.metadata?.featured);
+        const categoriesForHomepage = (featuredCategories.length > 0 ? featuredCategories : activeCategories).slice(0, 4);
+        setHomepageCategories(categoriesForHomepage);
 
       } catch (error: unknown) {
         const err = error as { message?: string; code?: string };
@@ -89,7 +111,7 @@ export default function Home() {
 
   const getHeroImage = () => {
     if (config.hero.backgroundImage) return config.hero.backgroundImage;
-    return "/tiwa logo.png";
+    return "/house-of-elle-logo.png";
   };
 
   const renderBanners = () => {
@@ -97,10 +119,10 @@ export default function Home() {
     if (activeBanners.length === 0) return null;
 
     return (
-      <div className="bg-blue-900 text-white py-2 overflow-hidden relative">
+      <div className="bg-brand-black text-brand-gold py-2 overflow-hidden relative border-b border-brand-gold/30">
         <div className="flex animate-marquee whitespace-nowrap">
           {activeBanners.concat(activeBanners).map((banner, index) => (
-            <span key={index} className="mx-8 text-sm font-medium tracking-wide flex items-center">
+            <span key={index} className="mx-8 text-sm font-semibold tracking-wide flex items-center">
               {banner.text}
             </span>
           ))}
@@ -113,45 +135,43 @@ export default function Home() {
     <main className="flex-col items-center justify-between min-h-screen">
       {renderBanners()}
 
-      {/* Hero Section - God Level Design */}
-      <section className="relative w-full h-[85vh] md:h-[95vh] overflow-hidden bg-black">
-
+      {/* Hero Section - House of Elle Signature */}
+      <section className="relative w-full h-[86vh] md:h-[94vh] overflow-hidden bg-brand-black">
         {/* Progress Bar */}
-        <div className="absolute top-0 left-0 right-0 z-30 h-1 bg-white/10">
+        <div className="absolute top-0 left-0 right-0 z-30 h-1 bg-brand-ivory/15">
           <div
             key={currentSlide}
-            className="h-full bg-white/80 animate-progress origin-left"
+            className="h-full bg-brand-gold animate-progress origin-left"
             style={{ animationDuration: '3000ms' }}
           ></div>
         </div>
 
-        {/* Background Slider + Per-Slide Content */}
         {[
           {
             image: '/Whisk_4e28dc6bf0d6be98458435c0c2950e3ddr.jpeg',
-            tag: 'New Arrivals',
-            heading: <>Premium <br /><span className="italic font-light text-blue-200">Quality Collection</span></>,
-            subtext: 'Discover our latest arrivals imported directly for you. Unmatched quality at unbeatable prices.',
-            cta: { text: 'Shop Now', href: '/shop' },
-            cta2: { text: 'View Catalog', href: '/categories' },
+            tag: 'Signature Drops',
+            heading: <>House of Elle <br /><span className="font-accent font-normal text-brand-champagne block mt-2">Fragrance Rituals</span></>,
+            subtext: 'Curated perfumes, body mists, and scent layers selected for bold everyday elegance.',
+            cta: { text: 'Shop Signature', href: '/shop' },
+            cta2: { text: 'Explore Categories', href: '/categories' },
             position: 'object-center'
           },
           {
             image: '/Whisk_50c2f050b440b4b95064c372c1ec7ee1dr.jpeg',
-            tag: 'Fashion & Style',
-            heading: <>Elegance <br /><span className="italic font-light text-rose-200">Redefined</span></>,
-            subtext: 'Step into the season with our exclusive fashion edits. Curated for the modern trendsetter.',
-            cta: { text: 'Shop Fashion', href: '/shop?category=fashion' },
-            cta2: { text: 'Learn More', href: '/about' },
+            tag: 'Body Care Studio',
+            heading: <>Layer. Glow. <br /><span className="font-accent font-normal text-brand-champagne block mt-2">Repeat Daily</span></>,
+            subtext: 'From sprays to butters and lotions, build a scent routine that stays with you all day.',
+            cta: { text: 'Shop Body Care', href: '/shop?search=body' },
+            cta2: { text: 'Read Our Story', href: '/about' },
             position: 'object-top'
           },
           {
             image: '/Whisk_64e2698834d1476801a4b505b30c324bdr.jpeg',
-            tag: 'Exclusive Deals',
-            heading: <>Limited <br /><span className="italic font-light text-amber-200">Time Offers</span></>,
-            subtext: 'Don\'t miss out on our seasonal sale. Great discounts on your favorite items.',
-            cta: { text: 'View Offers', href: '/shop?on_sale=true' },
-            cta2: { text: 'Contact Us', href: '/contact' },
+            tag: 'Retail + Wholesale',
+            heading: <>Accra's Scent <br /><span className="font-accent font-normal text-brand-champagne block mt-2">Destination</span></>,
+            subtext: 'Shop personal favorites or place bulk orders with trusted value and premium quality.',
+            cta: { text: 'Shop Gift Sets', href: '/shop?search=gift' },
+            cta2: { text: 'Contact House of Elle', href: '/contact' },
             position: 'object-center'
           },
         ].map((slide, index) => (
@@ -159,154 +179,138 @@ export default function Home() {
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
           >
-            {/* Background Image with Ken Burns Effect */}
             <div className={`absolute inset-0 ${index === currentSlide ? 'animate-ken-burns' : ''}`}>
               <Image
                 src={slide.image}
-                alt={`Hero Banner ${index + 1}`}
+                alt={`House of Elle hero ${index + 1}`}
                 fill
                 className={`object-cover ${slide.position}`}
                 priority={index === 0}
-                quality={82}
+                quality={84}
                 sizes="100vw"
               />
             </div>
 
-            {/* Premium Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+            {/* Clean luxury overlay - dark left for text readability, fading to clear right */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-            {/* Slide Content */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 md:px-16 max-w-7xl mx-auto h-full mt-[-20px]">
-              <div className="max-w-4xl flex flex-col items-center">
-                <div
-                  className={`overflow-hidden transition-all duration-700 delay-100 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                >
-                  <span className="inline-block py-1 px-4 mb-6 text-white/90 text-sm md:text-base tracking-[0.3em] uppercase font-semibold border border-white/20 rounded-full backdrop-blur-md bg-white/5">
-                    {slide.tag}
-                  </span>
-                </div>
-
-                <div className={`transition-all duration-700 delay-200 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif text-white mb-6 leading-[1.1] drop-shadow-2xl">
-                    {slide.heading}
-                  </h1>
-                </div>
-
-                <div className={`transition-all duration-700 delay-300 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-                    {slide.subtext}
-                  </p>
-                </div>
-
-                <div className={`flex flex-col sm:flex-row items-center justify-center gap-6 transition-all duration-700 delay-400 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <Link
-                    href={slide.cta.href}
-                    className="group relative px-10 py-4 bg-white text-gray-950 rounded-full font-medium text-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:bg-gray-100 hover:scale-105"
-                  >
-                    <span className="relative z-10 flex items-center gap-2">
-                      {slide.cta.text} <i className="ri-arrow-right-line transition-transform group-hover:translate-x-1"></i>
+            <div className="absolute inset-0 px-6 md:px-12 lg:px-16 py-14 md:py-20">
+              <div className="h-full max-w-7xl mx-auto grid md:grid-cols-[1fr_320px] gap-8 items-center">
+                <div className="text-left">
+                  <div className={`transition-all duration-700 delay-100 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <span className="inline-flex items-center gap-3 mb-6 text-brand-gold text-[10px] md:text-xs tracking-[0.3em] uppercase font-bold">
+                      <span className="w-6 h-[1px] bg-brand-gold/60"></span>
+                      {slide.tag}
+                      <span className="w-6 h-[1px] bg-brand-gold/60 md:hidden"></span>
                     </span>
-                  </Link>
-                  <Link
-                    href={slide.cta2.href}
-                    className="group px-10 py-4 bg-white/10 border border-white/30 text-white rounded-full font-medium text-lg backdrop-blur-md hover:bg-white/20 hover:border-white/50 transition-all hover:scale-105"
-                  >
-                    {slide.cta2.text}
-                  </Link>
+                  </div>
+
+                  <div className={`transition-all duration-700 delay-200 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-4 md:mb-6 leading-[1.05] drop-shadow-lg">
+                      {slide.heading}
+                    </h1>
+                  </div>
+
+                  <div className={`transition-all duration-700 delay-300 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <p className="text-sm md:text-xl text-brand-ivory/90 max-w-2xl mb-8 md:mb-9 font-light leading-relaxed drop-shadow">
+                      {slide.subtext}
+                    </p>
+                  </div>
+
+                  <div className={`flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4 transition-all duration-700 delay-400 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                    <Link
+                      href={slide.cta.href}
+                      className="group relative w-full sm:w-auto text-center px-8 py-3.5 btn-gold rounded-full font-semibold text-sm md:text-base overflow-hidden transition-all hover:scale-105"
+                    >
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        {slide.cta.text}
+                        <i className="ri-arrow-right-line transition-transform group-hover:translate-x-1"></i>
+                      </span>
+                    </Link>
+                    <Link
+                      href={slide.cta2.href}
+                      className="w-full sm:w-auto text-center px-8 py-3.5 bg-white/10 border border-white/30 text-white rounded-full font-medium text-sm md:text-base backdrop-blur-sm hover:bg-white/20 hover:border-white transition-all"
+                    >
+                      {slide.cta2.text}
+                    </Link>
+                  </div>
+                </div>
+
+                <div className={`hidden md:block transition-all duration-700 delay-500 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  <div className="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-md p-6 text-brand-ivory shadow-2xl">
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-brand-gold mb-4 font-bold">House of Elle Edit</p>
+                    <ul className="space-y-3 text-sm text-brand-ivory/85">
+                      <li className="flex items-center gap-2"><i className="ri-check-line text-brand-gold"></i> Perfumes and body mists</li>
+                      <li className="flex items-center gap-2"><i className="ri-check-line text-brand-gold"></i> Candles and diffusers</li>
+                      <li className="flex items-center gap-2"><i className="ri-check-line text-brand-gold"></i> Kids and family-friendly scents</li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-brand-gold/25 text-xs text-brand-ivory/70">
+                      Spintex Lashibi, Shalom Spot Junction - Accra
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         ))}
 
-        {/* Slide Indicators */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-4">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
           {[0, 1, 2].map((i) => (
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}
-              className={`h-1 transition-all duration-300 ${currentSlide === i ? 'w-12 bg-white' : 'w-6 bg-white/40 hover:bg-white/60'}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === i ? 'w-12 bg-brand-gold' : 'w-6 bg-brand-ivory/45 hover:bg-brand-ivory/70'}`}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>
 
-        {/* Decoration */}
-        <div className="absolute bottom-10 right-6 md:right-16 z-20 hidden md:block">
-          <div className="text-white/40 text-sm font-light tracking-widest vertical-text transform rotate-180" style={{ writingMode: 'vertical-rl' }}>
-            EST. 2026 — COLLECTION
+        <div className="absolute bottom-10 right-4 md:right-10 z-20 hidden md:block">
+          <div className="text-brand-ivory/45 text-[11px] font-light tracking-[0.25em] vertical-text transform rotate-180" style={{ writingMode: 'vertical-rl' }}>
+            HOUSE OF ELLE — ACCRA, GHANA
           </div>
         </div>
-
       </section>
 
       {/* Categories Section - God Level Redesign */}
-      <section className="py-20 md:py-32 bg-white relative overflow-hidden">
+      <section className="py-20 md:py-32 bg-brand-ivory relative overflow-hidden">
         {/* Decorative Background Element */}
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
           <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="relative">
-              <span className="block text-sm font-medium tracking-[0.2em] text-gray-500 mb-3 uppercase">Olfactory Families</span>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-gray-900 leading-[1.1]">
-                Shop by <span className="italic text-gray-400">Category</span>
+              <span className="block text-sm font-bold tracking-[0.2em] text-brand-gold mb-3 uppercase">Olfactory Families</span>
+              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-brand-black leading-[1.1]">
+                Shop by <span className="italic text-brand-brown">Category</span>
               </h2>
             </div>
             <div className="flex items-center gap-6">
-              <p className="hidden md:block text-gray-500 max-w-xs text-right font-light leading-relaxed">
+              <p className="hidden md:block text-brand-brown max-w-xs text-right font-medium leading-relaxed">
                 Explore our curated collection of fragrances, categorized by their dominant notes.
               </p>
-              <Link href="/categories" className="group flex items-center justify-center w-14 h-14 rounded-full border border-gray-200 hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300">
+              <Link href="/categories" className="group flex items-center justify-center w-14 h-14 rounded-full border border-brand-gold/50 hover:border-brand-gold hover:bg-brand-gold hover:text-brand-black transition-all duration-300 text-brand-gold">
                 <i className="ri-arrow-right-line text-xl transition-transform group-hover:translate-x-1"></i>
               </Link>
             </div>
           </AnimatedSection>
 
           <AnimatedGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {[
-              {
-                id: 'fresh',
-                name: 'Fresh',
-                subtitle: 'Cool, Clean, Airy',
-                slug: 'fresh',
-                image: '/Whisk_4e28dc6bf0d6be98458435c0c2950e3ddr.jpeg',
-                tint: 'bg-blue-900'
-              },
-              {
-                id: 'floral',
-                name: 'Floral',
-                subtitle: 'Romantic, Soft, Elegant',
-                slug: 'floral',
-                image: '/Whisk_50c2f050b440b4b95064c372c1ec7ee1dr.jpeg',
-                tint: 'bg-rose-900'
-              },
-              {
-                id: 'oriental',
-                name: 'Oriental',
-                display_name: 'Oriental (Amber)',
-                subtitle: 'Warm, Opulent, Spicy',
-                slug: 'oriental-amber',
-                image: '/Whisk_64e2698834d1476801a4b505b30c324bdr.jpeg',
-                tint: 'bg-amber-900'
-              },
-              {
-                id: 'woody',
-                name: 'Woody',
-                subtitle: 'Earthy, Refined, Natural',
-                slug: 'woody',
-                image: '/Whisk_6ec7df94ec3ca85b49644810b7fab2ecdr.jpeg',
-                tint: 'bg-stone-900'
-              }
-            ].map((category) => (
+            {homepageCategories.map((category: any, index: number) => {
+              const tintClasses = ['bg-blue-900', 'bg-rose-900', 'bg-amber-900', 'bg-stone-900'];
+              const tint = tintClasses[index % tintClasses.length];
+              const categoryImage = category.image_url || '/Whisk_4e28dc6bf0d6be98458435c0c2950e3ddr.jpeg';
+              const categorySubtitle = category.description || 'Curated fragrance collection';
+
+              return (
               <Link href={`/shop?category=${category.slug}`} key={category.id} className="group block h-full w-full">
                 <div className="relative aspect-[3/4] overflow-hidden isolate bg-gray-900 shadow-2xl rounded-3xl">
 
                   {/* Image: Cinematic Slow Zoom & Brightness Shift */}
                   <div className="absolute inset-0 transition-transform duration-[1500ms] ease-out group-hover:scale-110 opacity-90 group-hover:opacity-100">
                     <Image
-                      src={category.image}
+                      src={categoryImage}
                       alt={category.name}
                       fill
                       className="object-cover"
@@ -319,7 +323,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 transition-opacity duration-700 group-hover:opacity-90"></div>
 
                   {/* 2. Color Tint Overlay (Mix Blend) */}
-                  <div className={`absolute inset-0 ${category.tint} mix-blend-overlay opacity-40 transition-opacity duration-700 group-hover:opacity-50`}></div>
+                  <div className={`absolute inset-0 ${tint} mix-blend-overlay opacity-40 transition-opacity duration-700 group-hover:opacity-50`}></div>
 
                   {/* 3. Top Down Vignette for depth */}
                   <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent opacity-60"></div>
@@ -336,8 +340,8 @@ export default function Home() {
 
                     {/* Category Title */}
                     <div className="overflow-hidden">
-                      <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white leading-[0.9] mb-3 transform transition-transform duration-700 ease-out group-hover:-translate-y-2 drop-shadow-xl">
-                        {category.display_name || category.name}
+                      <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-[1] mb-3 transform transition-transform duration-700 ease-out group-hover:-translate-y-2 drop-shadow-xl">
+                        {renderNameWithStyledAmpersand(category.name)}
                       </h3>
                     </div>
 
@@ -347,7 +351,7 @@ export default function Home() {
                     {/* Subtitle / Description */}
                     <div className="overflow-hidden">
                       <p className="text-white/80 font-light text-sm tracking-widest uppercase transform translate-y-full opacity-0 transition-all duration-700 ease-out group-hover:translate-y-0 group-hover:opacity-100 delay-100">
-                        {category.subtitle}
+                        {categorySubtitle}
                       </p>
                     </div>
                   </div>
@@ -363,8 +367,13 @@ export default function Home() {
 
                 </div>
               </Link>
-            ))}
+            )})}
           </AnimatedGrid>
+          {homepageCategories.length === 0 && (
+            <div className="mt-8 rounded-2xl border border-brand-gold/25 bg-white/60 p-8 text-center text-brand-brown">
+              No categories available yet. Add categories in admin and mark them as featured to show here.
+            </div>
+          )}
         </div>
       </section>
 
@@ -378,13 +387,13 @@ export default function Home() {
           </AnimatedSection>
 
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 md:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {[...Array(4)].map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}
             </div>
           ) : (
-            <AnimatedGrid className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+            <AnimatedGrid className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {featuredProducts.map((product) => {
                 const variants = product.product_variants || [];
                 const hasVariants = variants.length > 0;
@@ -433,7 +442,7 @@ export default function Home() {
           <div className="text-center mt-16">
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center bg-gray-900 text-white px-10 py-4 rounded-full font-medium hover:bg-blue-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 btn-animate"
+              className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-10 py-4 rounded-full font-semibold hover:bg-brand-champagne transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 btn-animate"
             >
               View All Products
             </Link>

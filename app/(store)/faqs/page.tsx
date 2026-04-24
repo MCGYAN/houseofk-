@@ -25,7 +25,7 @@ export default function FAQsPage() {
     {
       category: 'orders',
       question: 'Can I modify or cancel my order?',
-      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately via WhatsApp 055 416 9992 or Call 054 501 0949 or email tiwaperfumestyle@gmail.com. Once an order is processed, modifications may not be possible.'
+      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately via WhatsApp 0553347531 or Call 0553347531 or email support@houseofelle.com. Once an order is processed, modifications may not be possible.'
     },
     {
       category: 'orders',
@@ -45,12 +45,12 @@ export default function FAQsPage() {
     {
       category: 'shipping',
       question: 'How much does shipping cost?',
-      answer: 'Standard shipping costs GHS 20. Express delivery costs GHS 40. Orders over GHS 300 qualify for FREE standard shipping. Store pickup is also available at no charge from our Accra location.'
+      answer: 'Standard shipping costs GHS 20. Express delivery costs GHS 40. Orders over GHS 300 qualify for FREE standard shipping. Store pickup is also available from our Spintex Lashibi, Shalom Spot Junction location.'
     },
     {
       category: 'shipping',
       question: 'Do you ship outside Ghana?',
-      answer: 'Currently, we only ship within Ghana. We\'re working on expanding to neighbouring West African countries. Sign up for our newsletter to be notified when international shipping becomes available.'
+      answer: 'We currently serve customers within Ghana from our Spintex Lashibi location. We\'re working on expanding to neighbouring West African countries. Sign up for our newsletter to be notified when international shipping becomes available.'
     },
     {
       category: 'shipping',
@@ -218,7 +218,7 @@ export default function FAQsPage() {
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">Still Have Questions?</h2>
           <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-            Our customer service team is ready to help. Contact us and we'll respond within 24 hours.
+            Our House of Elle team is ready to help with product and wholesale enquiries.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
@@ -229,7 +229,7 @@ export default function FAQsPage() {
               Contact Support
             </Link>
             <a
-              href="https://wa.me/233554169992"
+              href="https://wa.me/233553347531"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-full font-medium hover:bg-blue-500 transition-colors whitespace-nowrap"

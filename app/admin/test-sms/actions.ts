@@ -54,7 +54,7 @@ export async function testSmsAction(phone: string, message: string, authToken: s
             },
             body: JSON.stringify({
                 type: 1,
-                senderid: 'TIWAA',
+                senderid: process.env.SMS_SENDER_ID || 'STORE',
                 messages: [
                     {
                         recipient: recipient,

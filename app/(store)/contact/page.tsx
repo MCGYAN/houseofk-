@@ -88,14 +88,14 @@ export default function ContactPage() {
   };
 
   // Get contact details from CMS settings
-  const contactEmail = getSetting('contact_email') || 'tiwaperfumestyle@gmail.com';
-  const contactPhone = getSetting('contact_phone') || '0545010949';
-  const contactWhatsapp = getSetting('contact_whatsapp') || '0554169992';
-  const contactAddress = getSetting('contact_address') || 'Satellite, Accra';
+  const contactEmail = getSetting('contact_email') || 'support@houseofelle.com';
+  const contactPhone = getSetting('contact_phone') || '0553347531';
+  const contactWhatsapp = getSetting('contact_whatsapp') || '0553347531';
+  const contactAddress = getSetting('contact_address') || 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana';
 
-  const heroTitle = pageContent?.title || 'Get In Touch';
-  const heroSubtitle = pageContent?.subtitle || 'Have a question or need assistance?';
-  const heroContent = pageContent?.content || 'Our friendly team is here to help. Reach out through any of our contact channels.';
+  const heroTitle = pageContent?.title || 'Contact House of Elle';
+  const heroSubtitle = pageContent?.subtitle || 'Need help with products or wholesale orders?';
+  const heroContent = pageContent?.content || 'We are happy to help with perfume recommendations, gift sets, and bulk enquiries.';
 
   const waNumber = contactWhatsapp.replace(/[^0-9]/g, '');
   const waLink = waNumber.startsWith('0') ? `https://wa.me/233${waNumber.slice(1)}` : `https://wa.me/${waNumber}`;
@@ -108,7 +108,7 @@ export default function ContactPage() {
       title: 'Call Us',
       value: contactPhone,
       link: telLink,
-      description: 'Mon-Fri, 8am-6pm GMT'
+      description: 'Mon-Sat, 9am-6pm'
     },
     {
       icon: 'ri-mail-line',
@@ -129,18 +129,18 @@ export default function ContactPage() {
       title: 'Visit Us',
       value: contactAddress,
       link: 'https://maps.google.com',
-      description: 'Satellite, Accra'
+      description: 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana'
     }
   ];
 
   const faqs = [
     {
       question: 'What are your delivery times?',
-      answer: 'Standard delivery takes 2-5 business days within Ghana. Express delivery is available for Accra and Kumasi. We ship perfumes and fragrances with care.'
+      answer: 'Standard delivery takes 2-5 business days within Ghana. We package every order with care so your fragrances arrive in great condition.'
     },
     {
       question: 'Do you offer international shipping?',
-      answer: 'Currently, we ship within Ghana only. We handle all logistics so you simply order and receive your perfumes.'
+      answer: 'We currently serve customers within Ghana from our Spintex Lashibi location.'
     },
     {
       question: 'What payment methods do you accept?',
@@ -151,8 +151,9 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
       <PageHero
-        title="Get In Touch"
-        subtitle="Have a question or need assistance? We're here to help from Satellite, Accra."
+        eyebrow="Get In Touch"
+        title="Contact House of Elle"
+        subtitle="For personal orders, wholesale enquiries, or product guidance, our team is ready to help you choose the right scent."
         backgroundImage="/Whisk_835b10a10eab0caa2c7419d4a6e01102dr.jpeg"
       />
 
@@ -181,7 +182,7 @@ export default function ContactPage() {
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Send Us a Message</h2>
             <p className="text-gray-600 mb-8">
-              Fill out the form below and we'll get back to you as soon as possible.
+              Fill out the form below and our team will get back to you as soon as possible.
             </p>
 
             <form id="contactForm" onSubmit={handleSubmit} className="space-y-6">
@@ -269,14 +270,14 @@ export default function ContactPage() {
               {submitStatus === 'success' && (
                 <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl">
                   <i className="ri-check-line mr-2"></i>
-                  Message sent successfully! We'll respond within 24 hours.
+                  Message sent successfully! We’ll get back to you shortly.
                 </div>
               )}
 
               {submitStatus === 'error' && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
                   <i className="ri-error-warning-line mr-2"></i>
-                  Failed to send message. Please try again or contact us directly.
+                  We could not send your message right now. Please try again or contact us directly.
                 </div>
               )}
 
@@ -293,7 +294,7 @@ export default function ContactPage() {
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Quick Answers</h2>
             <p className="text-gray-600 mb-8">
-              Find answers to common questions before reaching out
+              Quick answers for orders, delivery, wholesale, and payments
             </p>
 
             <div className="space-y-4 mb-12">
@@ -315,7 +316,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-2xl font-bold mb-3">Need Immediate Help?</h3>
               <p className="text-blue-100 mb-6 leading-relaxed">
-                Our customer support team is available Monday to Friday, 8am-6pm GMT. For urgent matters, reach out via WhatsApp.
+                Our House of Elle support team is available Mon-Sat, 9am-6pm. For urgent enquiries, reach us directly on WhatsApp.
               </p>
               <a
                 href={waLink}
@@ -336,7 +337,7 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Visit Our Store</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              Prefer to shop in person? Visit our store. Our knowledgeable staff will be happy to assist you with product selection and answer any questions.
+              Prefer to shop in person? Visit House of Elle at Spintex Lashibi, Shalom Spot Junction, Accra, Ghana. We help customers searching for premium fashion and lifestyle picks near me in Accra.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-gray-600">
               <div className="flex items-center gap-2">
@@ -347,6 +348,17 @@ export default function ContactPage() {
                 <i className="ri-time-line text-blue-700"></i>
                 <span>Mon-Sat: 9am-6pm</span>
               </div>
+            </div>
+            <div className="mt-8 rounded-2xl overflow-hidden border border-brand-gold/20 shadow-md">
+              <iframe
+                title="House of Elle Location - Spintex Lashibi, Accra"
+                src="https://www.google.com/maps?q=Spintex%20Lashibi%20Shalom%20Spot%20Junction%20Accra&output=embed"
+                width="100%"
+                height="320"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full"
+              />
             </div>
           </div>
         </div>

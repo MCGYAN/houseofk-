@@ -26,13 +26,13 @@ function FooterSection({ title, children }: { title: string, children: React.Rea
 export default function Footer() {
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'TIWAA PERFUME STYLE HOUSE';
-  const siteTagline = getSetting('site_tagline') || 'I sell perfumes — Wholesale and retail.';
-  const contactEmail = getSetting('contact_email') || 'tiwaperfumestyle@gmail.com';
-  const contactPhone = getSetting('contact_phone') || '0545010949';
-  const contactWhatsapp = getSetting('contact_whatsapp') || '0554169992';
-  const contactAddress = getSetting('contact_address') || 'Satellite, Accra';
-  const siteLogo = getSetting('site_logo') || '/tiwa logo.png';
+  const siteName = getSetting('site_name') || 'House of Elle';
+  const siteTagline = getSetting('site_tagline') || 'Luxury fragrances for everyone.';
+  const contactEmail = getSetting('contact_email') || 'support@houseofelle.com';
+  const contactPhone = getSetting('contact_phone') || '0553347531';
+  const contactWhatsapp = getSetting('contact_whatsapp') || '0553347531';
+  const contactAddress = getSetting('contact_address') || 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana';
+  const siteLogo = getSetting('site_logo') || '/house-of-elle-logo.png';
   const socialFacebook = getSetting('social_facebook') || '';
   const socialInstagram = getSetting('social_instagram') || '';
   const socialTwitter = getSetting('social_twitter') || '';
@@ -44,9 +44,11 @@ export default function Footer() {
     <footer className="relative mt-12 z-0">
 
       {/* Footer Background Shape */}
-      <div className="absolute inset-0 bg-blue-950 rounded-t-[3rem] -z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#18120f] via-brand-brown to-[#17110d] rounded-t-[3rem] -z-10 overflow-hidden">
         {/* Decorative elements inside footer bg */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-800 to-transparent opacity-30"></div>
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/60 to-transparent opacity-80"></div>
+        <div className="absolute -top-16 -right-16 w-64 h-64 bg-brand-gold/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-brand-champagne/14 rounded-full blur-3xl"></div>
       </div>
 
       <div className="text-white pt-16 pb-12">
@@ -56,10 +58,10 @@ export default function Footer() {
             {/* Brand Column */}
             <div className="lg:col-span-1 space-y-6">
               <Link href="/" className="inline-block group">
-                <img src={siteLogo} alt={siteName} className="h-16 w-auto object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300" />
+                <img src={siteLogo} alt={siteName} className="h-24 w-auto object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300" />
               </Link>
-              <p className="text-blue-200/60 leading-relaxed text-sm">
-                {siteTagline} Satellite, Accra. Call {contactPhone} · WhatsApp {contactWhatsapp}
+              <p className="text-brand-ivory/80 leading-relaxed text-sm">
+                {siteTagline} {contactAddress}. Call {contactPhone} · WhatsApp {contactWhatsapp}
               </p>
 
               <div className="flex gap-3 pt-2">
@@ -76,7 +78,7 @@ export default function Footer() {
                     href={social.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-blue-900/40 border border-blue-800 rounded-full flex items-center justify-center text-blue-300 hover:bg-blue-500 hover:text-blue-950 hover:border-blue-500 transition-all hover:-translate-y-1"
+                    className="w-10 h-10 bg-black/20 border border-brand-gold/50 rounded-full flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-brand-black hover:border-brand-gold transition-all hover:-translate-y-1"
                   >
                     <i className={social.icon}></i>
                   </a>
@@ -88,41 +90,41 @@ export default function Footer() {
             <div className="lg:col-span-3 grid md:grid-cols-3 gap-8 lg:gap-12 pl-0 lg:pl-12">
 
               <div className="space-y-6">
-                <h4 className="font-serif text-xl font-bold text-white">Shop</h4>
-                <ul className="space-y-3 text-blue-100/60 text-sm">
-                  <li><Link href="/shop" className="hover:text-blue-300 transition-colors">All Products</Link></li>
-                  <li><Link href="/categories" className="hover:text-blue-300 transition-colors">Collections</Link></li>
-                  <li><Link href="/shop?sort=newest" className="hover:text-blue-300 transition-colors">New Arrivals</Link></li>
-                  <li><Link href="/shop?sort=bestsellers" className="hover:text-blue-300 transition-colors">Best Sellers</Link></li>
+                <h4 className="font-serif text-xl font-bold text-brand-ivory">Shop</h4>
+                <ul className="space-y-3 text-brand-ivory/75 text-sm">
+                  <li><Link href="/shop" className="hover:text-brand-gold transition-colors">All Products</Link></li>
+                  <li><Link href="/categories" className="hover:text-brand-gold transition-colors">Collections</Link></li>
+                  <li><Link href="/shop?sort=newest" className="hover:text-brand-gold transition-colors">New Arrivals</Link></li>
+                  <li><Link href="/shop?sort=bestsellers" className="hover:text-brand-gold transition-colors">Best Sellers</Link></li>
                 </ul>
               </div>
 
               <div className="space-y-6">
-                <h4 className="font-serif text-xl font-bold text-white">Support</h4>
-                <ul className="space-y-3 text-blue-100/60 text-sm">
-                  <li><Link href="/contact" className="hover:text-blue-300 transition-colors">Contact Us</Link></li>
-                  <li><Link href="/order-tracking" className="hover:text-blue-300 transition-colors">Track Order</Link></li>
-                  <li><Link href="/shipping" className="hover:text-blue-300 transition-colors">Shipping & Delivery</Link></li>
-                  <li><Link href="/returns" className="hover:text-blue-300 transition-colors">Returns & Exchange</Link></li>
+                <h4 className="font-serif text-xl font-bold text-brand-ivory">Support</h4>
+                <ul className="space-y-3 text-brand-ivory/75 text-sm">
+                  <li><Link href="/contact" className="hover:text-brand-gold transition-colors">Contact Us</Link></li>
+                  <li><Link href="/order-tracking" className="hover:text-brand-gold transition-colors">Track Order</Link></li>
+                  <li><Link href="/shipping" className="hover:text-brand-gold transition-colors">Shipping & Delivery</Link></li>
+                  <li><Link href="/returns" className="hover:text-brand-gold transition-colors">Returns & Exchange</Link></li>
                 </ul>
               </div>
 
               <div className="space-y-6">
-                <h4 className="font-serif text-xl font-bold text-white">Company</h4>
-                <ul className="space-y-3 text-blue-100/60 text-sm">
-                  <li><Link href="/about" className="hover:text-blue-300 transition-colors">Our Story</Link></li>
-                  <li><Link href="/privacy" className="hover:text-blue-300 transition-colors">Privacy Policy</Link></li>
-                  <li><Link href="/terms" className="hover:text-blue-300 transition-colors">Terms of Service</Link></li>
-                  <li><Link href="/admin" className="hover:text-blue-300 transition-colors">Admin Access</Link></li>
+                <h4 className="font-serif text-xl font-bold text-brand-ivory">Company</h4>
+                <ul className="space-y-3 text-brand-ivory/75 text-sm">
+                  <li><Link href="/about" className="hover:text-brand-gold transition-colors">Our Story</Link></li>
+                  <li><Link href="/privacy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link></li>
+                  <li><Link href="/terms" className="hover:text-brand-gold transition-colors">Terms of Service</Link></li>
+                  <li><Link href="/admin" className="hover:text-brand-gold transition-colors">Admin Access</Link></li>
                 </ul>
               </div>
 
             </div>
           </div>
 
-          <div className="border-t border-blue-900/50 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-blue-500/40">
+          <div className="border-t border-brand-gold/30 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-ivory/60">
             <p>&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</p>
-            <div className="flex gap-4 opacity-40">
+            <div className="flex gap-4 opacity-70 text-brand-gold">
               <i className="ri-visa-line text-2xl"></i>
               <i className="ri-mastercard-line text-2xl"></i>
               <i className="ri-paypal-line text-2xl"></i>

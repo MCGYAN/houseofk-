@@ -18,8 +18,8 @@ export default function Header() {
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'TIWAA PERFUME STYLE HOUSE';
-  const headerLogo = getSetting('site_logo') || '/tiwa logo.png';
+  const siteName = getSetting('site_name') || 'House of Elle';
+  const headerLogo = getSetting('site_logo') || '/house-of-elle-logo.png';
 
   useEffect(() => {
     // Wishlist logic
@@ -60,7 +60,7 @@ export default function Header() {
     <>
       <AnnouncementBar />
 
-      <header className="bg-white sticky top-0 z-50 border-b border-gray-100 transition-all duration-300">
+      <header className="bg-brand-ivory/95 backdrop-blur-md sticky top-0 z-50 border-b border-brand-gold/20 transition-all duration-300 shadow-[0_8px_30px_rgba(10,10,10,0.06)]">
         <div className="safe-area-top" />
         <nav aria-label="Main navigation" className="relative">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,7 +69,7 @@ export default function Header() {
               {/* Left: Mobile Menu Trigger (Mobile) & Logo */}
               <div className="flex items-center gap-4">
                 <button
-                  className="lg:hidden p-2 -ml-2 text-gray-900 hover:text-gray-600 transition-colors"
+                  className="lg:hidden p-2 -ml-2 text-brand-black hover:text-brand-gold transition-colors"
                   onClick={() => setIsMobileMenuOpen(true)}
                   aria-label="Open menu"
                 >
@@ -77,16 +77,18 @@ export default function Header() {
                 </button>
                 <Link
                   href="/"
-                  className="flex items-center select-none"
+                  className="flex items-center select-none rounded-md"
                   aria-label="Go to homepage"
                 >
-                  <img src={headerLogo} alt={siteName} className="h-9 md:h-11 w-auto object-contain" />
+                  <img src={headerLogo} alt={siteName} className="h-10 sm:h-11 md:h-12 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.1)]" />
                 </Link>
               </div>
 
               {/* Center: Navigation Links (Desktop) */}
-              <div className="hidden lg:flex items-center justify-center space-x-12">
+              <div className="hidden lg:flex items-center justify-center">
+                <div className="flex items-center rounded-full border border-brand-gold/25 bg-white/70 px-5 py-2 shadow-sm">
                 {[
+                  { label: 'Home', href: '/' },
                   { label: 'Shop', href: '/shop' },
                   { label: 'Categories', href: '/categories' },
                   { label: 'About', href: '/about' },
@@ -95,18 +97,19 @@ export default function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="group relative py-2 text-sm uppercase tracking-widest font-medium text-gray-900 transition-colors hover:text-gray-600"
+                    className="group relative px-4 py-2 text-xs uppercase tracking-[0.2em] font-semibold text-brand-black transition-colors hover:text-brand-gold"
                   >
                     {link.label}
-                    <span className="absolute inset-x-0 bottom-0 h-px scale-x-0 bg-gray-900 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                    <span className="absolute left-4 right-4 -bottom-0.5 h-[2px] scale-x-0 bg-brand-gold transition-transform duration-300 ease-out group-hover:scale-x-100" />
                   </Link>
                 ))}
+                </div>
               </div>
 
               {/* Right: Icons */}
               <div className="flex items-center justify-end space-x-2 sm:space-x-4">
                 <button
-                  className="p-2 text-gray-900 hover:text-gray-600 transition-transform hover:scale-105"
+                  className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all"
                   onClick={() => setIsSearchOpen(true)}
                   aria-label="Search"
                 >
@@ -115,12 +118,12 @@ export default function Header() {
 
                 <Link
                   href="/wishlist"
-                  className="p-2 text-gray-900 hover:text-gray-600 transition-transform hover:scale-105 relative hidden sm:block"
+                  className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all relative hidden sm:flex items-center justify-center"
                   aria-label="Wishlist"
                 >
                   <i className="ri-heart-line text-xl"></i>
                   {wishlistCount > 0 && (
-                    <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[10px] font-bold text-white">
+                    <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-brand-gold text-[10px] font-bold text-brand-black">
                       {wishlistCount}
                     </span>
                   )}
@@ -129,7 +132,7 @@ export default function Header() {
                 {user ? (
                   <Link
                     href="/account"
-                    className="p-2 text-gray-900 hover:text-gray-600 transition-transform hover:scale-105 hidden sm:block"
+                    className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all hidden sm:flex items-center justify-center"
                     aria-label="Account"
                   >
                     <i className="ri-user-line text-xl"></i>
@@ -137,7 +140,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href="/auth/login"
-                    className="p-2 text-gray-900 hover:text-gray-600 transition-transform hover:scale-105 hidden sm:block"
+                    className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all hidden sm:flex items-center justify-center"
                     aria-label="Login"
                   >
                     <i className="ri-user-line text-xl"></i>
@@ -146,13 +149,13 @@ export default function Header() {
 
                 <div className="relative">
                   <button
-                    className="p-2 text-gray-900 hover:text-gray-600 transition-transform hover:scale-105"
+                    className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all"
                     onClick={() => setIsCartOpen(!isCartOpen)}
                     aria-label="Cart"
                   >
                     <i className="ri-shopping-bag-line text-xl"></i>
                     {cartCount > 0 && (
-                      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-black text-[10px] font-bold text-white">
+                      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-brand-gold text-[10px] font-bold text-brand-black">
                         {cartCount}
                       </span>
                     )}
@@ -186,12 +189,12 @@ export default function Header() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for products..."
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                    className="w-full px-4 py-3 pr-12 border border-brand-gold/30 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-brand-gold text-base"
                     autoFocus
                   />
                   <button
                     type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-blue-700 hover:text-blue-900"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-brand-brown hover:text-brand-gold"
                   >
                     <i className="ri-search-line text-xl"></i>
                   </button>
@@ -211,21 +214,21 @@ export default function Header() {
             onClick={() => setIsMobileMenuOpen(false)}
             aria-hidden="true"
           />
-          <div className="absolute top-0 left-0 bottom-0 w-4/5 max-w-xs bg-white shadow-xl flex flex-col animate-in slide-in-from-left duration-300">
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+          <div className="absolute top-0 left-0 bottom-0 w-4/5 max-w-xs bg-brand-ivory shadow-xl flex flex-col animate-in slide-in-from-left duration-300">
+            <div className="p-4 border-b border-brand-gold/20 flex items-center justify-between">
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                <img src={headerLogo} alt={siteName} className="h-8 w-auto object-contain" />
+                <img src={headerLogo} alt={siteName} className="h-9 w-auto object-contain drop-shadow-sm" />
               </Link>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 -mr-2 text-gray-500 hover:text-gray-900"
+                className="p-2 -mr-2 text-brand-brown hover:text-brand-black"
                 aria-label="Close menu"
               >
                 <i className="ri-close-line text-2xl"></i>
               </button>
             </div>
 
-            <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+            <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-3">
               {[
                 { label: 'Home', href: '/' },
                 { label: 'Shop', href: '/shop' },
@@ -236,13 +239,13 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
+                  className="block py-3 text-sm uppercase tracking-[0.2em] font-semibold text-brand-black hover:text-brand-gold transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="h-px bg-gray-100 my-2"></div>
+              <div className="h-px bg-brand-gold/20 my-6"></div>
               {[
                 { label: 'Track Order', href: '/order-tracking' },
                 { label: 'Wishlist', href: '/wishlist' },
@@ -251,7 +254,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-4 py-3 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition-colors"
+                  className="block py-3 text-sm font-medium text-brand-brown hover:text-brand-black transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -259,8 +262,8 @@ export default function Header() {
               ))}
             </nav>
 
-            <div className="p-4 border-t border-gray-100">
-              <p className="text-xs text-gray-500 text-center">
+            <div className="p-4 border-t border-brand-gold/20">
+              <p className="text-xs text-brand-brown text-center">
                 &copy; {new Date().getFullYear()} {siteName}
               </p>
             </div>

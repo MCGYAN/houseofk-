@@ -13,11 +13,12 @@ interface SEOProps {
   publishedTime?: string;
   author?: string;
   noindex?: boolean;
+  canonicalPath?: string;
 }
 
 export function generateMetadata({
-  title = 'TIWAA PERFUME STYLE HOUSE — Perfumes Wholesale & Retail',
-  description = 'I sell perfumes — wholesale and retail. Satellite, Accra. Call 054 501 0949 · WhatsApp 055 416 9992.',
+  title = 'House of Elle | Premium Women’s Fashion in Accra',
+  description = 'Shop premium women’s fashion at House of Elle. Discover stylish, modern outfits designed for confidence and elegance. Located in Accra, Ghana.',
   keywords = [],
   ogImage,
   ogType = 'website',
@@ -27,21 +28,22 @@ export function generateMetadata({
   category,
   publishedTime,
   author,
-  noindex = false
+  noindex = false,
+  canonicalPath = ''
 }: SEOProps): Metadata {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
-  const defaultOgImage = `${siteUrl}/tiwa%20logo.png`;
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
+  const defaultOgImage = `${siteUrl}/house-of-elle-logo.png`;
   const resolvedOgImage = ogImage || defaultOgImage;
-  const siteName = 'TIWAA PERFUME STYLE HOUSE';
+  const siteName = 'House of Elle';
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 
   const defaultKeywords = [
-    'online shopping ghana',
-    'premium products ghana',
-    'buy online ghana',
-    'ecommerce ghana',
-    'fast delivery ghana',
-    'secure shopping'
+    'women’s fashion Ghana',
+    'boutique Accra',
+    'stylish outfits Ghana',
+    'ladies wear Accra',
+    'premium fashion Ghana',
+    'House of Elle'
   ];
 
   const allKeywords = [...new Set([...keywords, ...defaultKeywords])];
@@ -79,7 +81,7 @@ export function generateMetadata({
       }
     },
     alternates: {
-      canonical: siteUrl
+      canonical: canonicalPath ? `${siteUrl}${canonicalPath}` : siteUrl
     }
   };
 
@@ -116,7 +118,7 @@ export function generateProductSchema(product: {
     sku: product.sku,
     brand: {
       '@type': 'Brand',
-      name: product.brand || 'PremiumShop'
+      name: product.brand || 'House of Elle'
     },
     offers: {
       '@type': 'Offer',
@@ -161,17 +163,17 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 export function generateOrganizationSchema() {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'TIWAA PERFUME STYLE HOUSE',
+    name: 'House of Elle',
     url: siteUrl,
-    logo: `${siteUrl}/tiwa%20logo.png`,
-    image: `${siteUrl}/tiwa%20logo.png`,
+    logo: `${siteUrl}/house-of-elle-logo.png`,
+    image: `${siteUrl}/house-of-elle-logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+233545010949',
+      telephone: '+233553347531',
       contactType: 'Customer Service',
       areaServed: 'GH',
       availableLanguage: ['English']
@@ -180,11 +182,11 @@ export function generateOrganizationSchema() {
 }
 
 export function generateWebsiteSchema() {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tiwaperfumestyle.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'TIWAA PERFUME STYLE HOUSE',
+    name: 'House of Elle',
     url: siteUrl,
     potentialAction: {
       '@type': 'SearchAction',
