@@ -378,11 +378,11 @@ export default function Home() {
       </section>
 
 
-      {/* Featured Products */}
+      {/* Best sellers */}
       <section className="py-16 md:py-24 bg-stone-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-16">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-gray-900 mb-4">Featured Products</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-gray-900 mb-4">Best sellers</h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">Top picks from our latest arrivals</p>
           </AnimatedSection>
 
