@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
+import { generateProductCatalogPdf } from '@/lib/admin/product-catalog-pdf';
 
 export default function ProductsPage() {
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
@@ -13,6 +14,8 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<any[]>([]);
+  const [pdfGenerating, setPdfGenerating] = useState(false);
+  const [pdfProgress, setPdfProgress] = useState<{ current: number; total: number } | null>(null);
 
   // Statistics
   const [stats, setStats] = useState({
@@ -171,6 +174,49 @@ export default function ProductsPage() {
       (product.category && product.category.toLowerCase().includes(term));
   });
 
+  const handleDownloadCatalogPdf = async () => {
+    const source =
+      selectedProducts.length > 0
+        ? filteredProducts.filter((p) => selectedProducts.includes(p.id))
+        : filteredProducts;
+
+    if (source.length === 0) {
+      alert(selectedProducts.length > 0 ? 'No selected products match your search.' : 'No products to export.');
+      return;
+    }
+
+    setPdfGenerating(true);
+    setPdfProgress({ current: 0, total: source.length });
+
+    try {
+      await generateProductCatalogPdf(
+        source.map((p) => ({
+          id: p.id,
+          name: p.name,
+          price: Number(p.price) || 0,
+          stock: Number(p.stock ?? p.quantity) || 0,
+          sku: p.sku,
+          category: p.category,
+          status: p.status,
+          imageUrl: p.image,
+        })),
+        {
+          subtitle:
+            selectedProducts.length > 0
+              ? `Product catalog (${source.length} selected)`
+              : 'Product catalog (all products)',
+          onProgress: (current, total) => setPdfProgress({ current, total }),
+        }
+      );
+    } catch (err) {
+      console.error('PDF export failed:', err);
+      alert('Could not create PDF. Please try again.');
+    } finally {
+      setPdfGenerating(false);
+      setPdfProgress(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -179,6 +225,29 @@ export default function ProductsPage() {
           <p className="text-gray-600 mt-1">Manage your product catalog and inventory</p>
         </div>
         <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={handleDownloadCatalogPdf}
+            disabled={pdfGenerating || filteredProducts.length === 0}
+            className="px-6 py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-semibold transition-colors whitespace-nowrap cursor-pointer flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+            title="Download a PDF with product photos, names, prices, and stock"
+          >
+            {pdfGenerating ? (
+              <>
+                <i className="ri-loader-4-line animate-spin mr-2"></i>
+                {pdfProgress
+                  ? `Creating PDF (${pdfProgress.current}/${pdfProgress.total})…`
+                  : 'Creating PDF…'}
+              </>
+            ) : (
+              <>
+                <i className="ri-file-pdf-line mr-2"></i>
+                {selectedProducts.length > 0
+                  ? `Download PDF (${selectedProducts.length})`
+                  : 'Download PDF catalog'}
+              </>
+            )}
+          </button>
           <Link
             href="/admin/products/import"
             className="px-6 py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-semibold transition-colors whitespace-nowrap cursor-pointer flex items-center justify-center"
@@ -291,6 +360,14 @@ export default function ProductsPage() {
               {selectedProducts.length} product{selectedProducts.length > 1 ? 's' : ''} selected
             </p>
             <div className="flex items-center space-x-2">
+              <button
+                onClick={handleDownloadCatalogPdf}
+                disabled={pdfGenerating}
+                className="px-4 py-2 bg-white border border-blue-300 text-blue-800 hover:bg-blue-100 rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer disabled:opacity-60"
+              >
+                <i className="ri-file-pdf-line mr-1"></i>
+                Download PDF
+              </button>
               <button
                 onClick={handleBulkDelete}
                 className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer"
