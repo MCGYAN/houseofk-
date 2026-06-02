@@ -45,17 +45,17 @@ export default function MockCategoryCard({ label, href, image = '', index = 0 }:
 
         {/* Desktop only — overlay on image */}
         <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-brand-plum/70 via-brand-plum/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="hidden md:flex absolute bottom-4 left-3 right-3 items-center justify-between gap-3 glass-plum rounded-xl px-4 py-3">
-          <span className="font-serif text-lg md:text-xl text-brand-cream">{label}</span>
-          <span className="w-9 h-9 rounded-full glass-cream flex items-center justify-center text-brand-plum shrink-0 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+        <div className="hidden md:flex absolute bottom-4 left-3 right-3 items-center justify-between gap-3 boutique-category-name-glass boutique-category-name-glass--overlay px-4 py-3">
+          <span className="font-serif text-lg md:text-xl text-brand-cream tracking-wide">{label}</span>
+          <span className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center text-brand-cream shrink-0 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
             <i className="ri-arrow-right-line" />
           </span>
         </div>
       </div>
 
-      {/* Mobile only — label below image so photos stay fully visible */}
-      <div className="md:hidden px-2.5 py-2.5 bg-brand-plum text-center border-t border-brand-rose/20 transition-colors duration-300 group-active:bg-brand-dark">
-        <span className="font-serif text-sm text-brand-cream leading-snug block truncate transition-transform duration-300 group-active:translate-x-0.5">
+      {/* Mobile only — frosted plum glass label strip */}
+      <div className="md:hidden px-3 py-3 text-center boutique-category-name-glass">
+        <span className="font-serif text-[13px] text-brand-cream/95 leading-snug block truncate tracking-[0.04em] transition-transform duration-300 group-active:translate-x-0.5">
           {label}
         </span>
       </div>

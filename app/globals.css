@@ -458,6 +458,55 @@ img {
   color: var(--brand-cream);
 }
 
+/* Category name strip — frosted plum glass */
+.boutique-category-name-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(74, 44, 61, 0.82) 0%,
+    rgba(74, 44, 61, 0.58) 55%,
+    rgba(74, 44, 61, 0.72) 100%
+  );
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 -8px 24px rgba(74, 44, 61, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.group:active .boutique-category-name-glass,
+.group:hover .boutique-category-name-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(74, 44, 61, 0.9) 0%,
+    rgba(74, 44, 61, 0.65) 55%,
+    rgba(74, 44, 61, 0.82) 100%
+  );
+  border-top-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 -10px 28px rgba(74, 44, 61, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.boutique-category-name-glass--overlay {
+  border-top: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 8px 28px rgba(74, 44, 61, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.group:hover .boutique-category-name-glass--overlay {
+  box-shadow:
+    0 12px 32px rgba(74, 44, 61, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
 .glass-card {
   background: linear-gradient(
     145deg,

@@ -134,13 +134,13 @@ export default function Home() {
             {MOCK_FEATURED_PRODUCTS.map((product) => (
               <MockProductCard
                 key={product.id}
+                slug={product.slug}
                 name={product.name}
                 category={product.category}
                 price={product.price}
                 originalPrice={'originalPrice' in product ? product.originalPrice : undefined}
                 image={product.image}
                 tagline={product.tagline}
-                href="/shop"
               />
             ))}
           </AnimatedGrid>
