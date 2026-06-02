@@ -1,25 +1,25 @@
 {
-  "name": "House of Elle",
-  "short_name": "House of Elle",
-  "description": "Luxury fragrances for everyone.",
+  "name": "House of K",
+  "short_name": "House of K",
+  "description": "Elevate Your Style",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#C89B3C",
+  "theme_color": "#4A2C3D",
   "dir": "ltr",
   "lang": "en",
-  "categories": ["shopping", "lifestyle"],
+  "categories": ["shopping"],
   "icons": [
     {
-      "src": "/favicon/android-chrome-192x192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon/android-chrome-512x512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -27,32 +27,16 @@
   ],
   "shortcuts": [
     {
-      "name": "Shop Products",
+      "name": "Shop",
       "short_name": "Shop",
-      "description": "Browse products",
       "url": "/shop?source=pwa-shortcut",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
-      "name": "My Cart",
+      "name": "Cart",
       "short_name": "Cart",
-      "description": "View your shopping cart",
       "url": "/cart?source=pwa-shortcut",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" }]
-    },
-    {
-      "name": "Track Order",
-      "short_name": "Track",
-      "description": "Track your order status",
-      "url": "/order-tracking?source=pwa-shortcut",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" }]
-    },
-    {
-      "name": "My Account",
-      "short_name": "Account",
-      "description": "View your account",
-      "url": "/account?source=pwa-shortcut",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ],
   "screenshots": [],

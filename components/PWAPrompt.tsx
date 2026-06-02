@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { useState, useEffect } from 'react';
 import { usePWAInstall } from './PWAInstaller';
 
@@ -55,13 +56,13 @@ export default function PWAPrompt() {
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg flex-shrink-0 bg-blue-50 flex items-center justify-center">
                 <img
-                  src="/house-of-elle-logo.png"
-                  alt="House of Elle"
+                  src={LOGO_PATH}
+                  alt={SITE_NAME}
                   className="w-14 h-14 object-contain"
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-gray-900 text-lg truncate">House of Elle</h3>
+                <h3 className="font-bold text-gray-900 text-lg truncate">{SITE_NAME}</h3>
                 <p className="text-sm text-gray-500">example.com</p>
                 <div className="flex items-center gap-1 mt-1">
                   {[1, 2, 3, 4, 5].map((star) => (

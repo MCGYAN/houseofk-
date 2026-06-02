@@ -1,28 +1,47 @@
 'use client';
 
+import { SITE_NAME, HEADER_LOGO_PATH } from '@/lib/site-brand';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { createPortal } from 'react-dom';
 import MiniCart from './MiniCart';
 import { useCart } from '@/context/CartContext';
 import { supabase } from '@/lib/supabase';
 import { useCMS } from '@/context/CMSContext';
-import AnnouncementBar from './AnnouncementBar';
+
+const NAV_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Shop', href: '/shop' },
+  { label: 'Categories', href: '/categories' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [wishlistCount, setWishlistCount] = useState(0);
   const [user, setUser] = useState<any>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'House of Elle';
-  const headerLogo = getSetting('site_logo') || '/house-of-elle-logo.png';
+  const siteName = getSetting('site_name') || SITE_NAME;
 
   useEffect(() => {
-    // Wishlist logic
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
     const updateWishlistCount = () => {
       const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
       setWishlistCount(wishlist.length);
@@ -31,7 +50,6 @@ export default function Header() {
     updateWishlistCount();
     window.addEventListener('wishlistUpdated', updateWishlistCount);
 
-    // Auth logic
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
@@ -49,6 +67,13 @@ export default function Header() {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = isSearchOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isSearchOpen]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -56,106 +81,37 @@ export default function Header() {
     }
   };
 
-  return (
-    <>
-      <AnnouncementBar />
+  const iconBtn =
+    'h-10 w-10 rounded-full flex items-center justify-center text-brand-plum transition-all duration-300 max-lg:bg-white/70 max-lg:border max-lg:border-brand-rose/15 lg:glass-pill lg:border-white/40 hover:text-brand-rose';
 
-      <header className="bg-brand-ivory/95 backdrop-blur-md sticky top-0 z-50 border-b border-brand-gold/20 transition-all duration-300 shadow-[0_8px_30px_rgba(10,10,10,0.06)]">
-        <div className="safe-area-top" />
+  const headerContent = (
+    <>
+      <header
+        data-store-header
+        className={`store-header-fixed mobile-header-glass safe-area-top transition-all duration-300 lg:duration-500 lg:ease-boutique ${
+          scrolled ? 'lg:glass-frosted lg:border-white/40 lg:shadow-boutique' : 'lg:glass-cream lg:border-brand-rose/20'
+        }`}
+      >
         <nav aria-label="Main navigation" className="relative">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="h-20 grid grid-cols-[auto_1fr_auto] items-center gap-4">
-
-              {/* Left: Mobile Menu Trigger (Mobile) & Logo */}
-              <div className="flex items-center gap-4">
-                <button
-                  className="lg:hidden p-2 -ml-2 text-brand-black hover:text-brand-gold transition-colors"
-                  onClick={() => setIsMobileMenuOpen(true)}
-                  aria-label="Open menu"
-                >
-                  <i className="ri-menu-line text-2xl"></i>
+            {/* Mobile: logo left | search + cart right */}
+            <div className="lg:hidden flex items-center justify-between h-16 gap-3">
+              <Link href="/" className="flex shrink-0 select-none" aria-label="Go to homepage">
+                <img
+                  src={HEADER_LOGO_PATH}
+                  alt={siteName}
+                  className="h-9 w-auto max-w-[min(52vw,200px)] object-contain object-left"
+                />
+              </Link>
+              <div className="flex items-center justify-end gap-1 shrink-0">
+                <button className={iconBtn} onClick={() => setIsSearchOpen(true)} aria-label="Search">
+                  <i className="ri-search-line text-xl" />
                 </button>
-                <Link
-                  href="/"
-                  className="flex items-center select-none rounded-md"
-                  aria-label="Go to homepage"
-                >
-                  <img src={headerLogo} alt={siteName} className="h-10 sm:h-11 md:h-12 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.1)]" />
-                </Link>
-              </div>
-
-              {/* Center: Navigation Links (Desktop) */}
-              <div className="hidden lg:flex items-center justify-center">
-                <div className="flex items-center rounded-full border border-brand-gold/25 bg-white/70 px-5 py-2 shadow-sm">
-                {[
-                  { label: 'Home', href: '/' },
-                  { label: 'Shop', href: '/shop' },
-                  { label: 'Categories', href: '/categories' },
-                  { label: 'About', href: '/about' },
-                  { label: 'Contact', href: '/contact' },
-                ].map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="group relative px-4 py-2 text-xs uppercase tracking-[0.2em] font-semibold text-brand-black transition-colors hover:text-brand-gold"
-                  >
-                    {link.label}
-                    <span className="absolute left-4 right-4 -bottom-0.5 h-[2px] scale-x-0 bg-brand-gold transition-transform duration-300 ease-out group-hover:scale-x-100" />
-                  </Link>
-                ))}
-                </div>
-              </div>
-
-              {/* Right: Icons */}
-              <div className="flex items-center justify-end space-x-2 sm:space-x-4">
-                <button
-                  className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all"
-                  onClick={() => setIsSearchOpen(true)}
-                  aria-label="Search"
-                >
-                  <i className="ri-search-line text-xl"></i>
-                </button>
-
-                <Link
-                  href="/wishlist"
-                  className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all relative hidden sm:flex items-center justify-center"
-                  aria-label="Wishlist"
-                >
-                  <i className="ri-heart-line text-xl"></i>
-                  {wishlistCount > 0 && (
-                    <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-brand-gold text-[10px] font-bold text-brand-black">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Link>
-
-                {user ? (
-                  <Link
-                    href="/account"
-                    className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all hidden sm:flex items-center justify-center"
-                    aria-label="Account"
-                  >
-                    <i className="ri-user-line text-xl"></i>
-                  </Link>
-                ) : (
-                  <Link
-                    href="/auth/login"
-                    className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all hidden sm:flex items-center justify-center"
-                    aria-label="Login"
-                  >
-                    <i className="ri-user-line text-xl"></i>
-                  </Link>
-                )}
-
                 <div className="relative">
-                  <button
-                    className="h-9 w-9 rounded-full border border-transparent bg-transparent text-brand-black hover:text-brand-gold hover:border-brand-gold/35 hover:bg-white/70 transition-all"
-                    onClick={() => setIsCartOpen(!isCartOpen)}
-                    aria-label="Cart"
-                  >
-                    <i className="ri-shopping-bag-line text-xl"></i>
+                  <button className={iconBtn} onClick={() => setIsCartOpen(!isCartOpen)} aria-label="Cart">
+                    <i className="ri-shopping-bag-3-line text-xl" />
                     {cartCount > 0 && (
-                      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-brand-gold text-[10px] font-bold text-brand-black">
+                      <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-rose text-[10px] font-bold text-white">
                         {cartCount}
                       </span>
                     )}
@@ -163,113 +119,129 @@ export default function Header() {
                   <MiniCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
                 </div>
               </div>
+            </div>
 
+            {/* Desktop */}
+            <div
+              className={`hidden lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-4 lg:transition-all lg:duration-500 ${
+                scrolled ? 'lg:h-[4.25rem]' : 'lg:h-20'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Link href="/" className="flex items-center select-none" aria-label="Go to homepage">
+                  <img
+                    src={HEADER_LOGO_PATH}
+                    alt={siteName}
+                    className={`w-auto object-contain transition-all duration-500 ${
+                      scrolled ? 'h-8 sm:h-9' : 'h-9 sm:h-10 md:h-11 max-w-[220px]'
+                    }`}
+                  />
+                </Link>
+              </div>
+
+              <div className="hidden lg:flex items-center justify-center">
+                <div className="flex items-center glass-pill px-2 py-1.5 shadow-sm">
+                  {NAV_LINKS.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="group relative px-4 py-2 text-[11px] uppercase tracking-[0.22em] font-semibold text-brand-plum/85 transition-colors hover:text-brand-rose"
+                    >
+                      {link.label}
+                      <span className="absolute left-3 right-3 -bottom-0.5 h-px scale-x-0 bg-brand-rose transition-transform duration-300 ease-boutique group-hover:scale-x-100" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-1 sm:gap-2">
+                <button className={iconBtn} onClick={() => setIsSearchOpen(true)} aria-label="Search">
+                  <i className="ri-search-line text-xl" />
+                </button>
+
+                <Link href="/wishlist" className={`${iconBtn} relative hidden sm:flex`} aria-label="Wishlist">
+                  <i className="ri-heart-3-line text-xl" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-rose text-[10px] font-bold text-white">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Link>
+
+                {user ? (
+                  <Link href="/account" className={`${iconBtn} hidden sm:flex`} aria-label="Account">
+                    <i className="ri-user-3-line text-xl" />
+                  </Link>
+                ) : (
+                  <Link href="/auth/login" className={`${iconBtn} hidden sm:flex`} aria-label="Login">
+                    <i className="ri-user-3-line text-xl" />
+                  </Link>
+                )}
+
+                <div className="relative">
+                  <button className={iconBtn} onClick={() => setIsCartOpen(!isCartOpen)} aria-label="Cart">
+                    <i className="ri-shopping-bag-3-line text-xl" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-rose text-[10px] font-bold text-white">
+                        {cartCount}
+                      </span>
+                    )}
+                  </button>
+                  <MiniCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+                </div>
+              </div>
             </div>
           </div>
         </nav>
       </header>
 
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-24">
-          <div className="bg-white rounded-lg w-full max-w-2xl mx-4 shadow-2xl">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-gray-900">Search Products</h3>
-                <button
-                  onClick={() => setIsSearchOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700"
-                >
-                  <i className="ri-close-line text-2xl"></i>
-                </button>
-              </div>
-              <form onSubmit={handleSearch}>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search for products..."
-                    className="w-full px-4 py-3 pr-12 border border-brand-gold/30 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-brand-gold text-base"
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-brand-brown hover:text-brand-gold"
-                  >
-                    <i className="ri-search-line text-xl"></i>
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )
-      }
-
-      {/* Mobile Menu Drawer */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] lg:hidden">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-24 px-4 animate-fade-in-backdrop">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setIsMobileMenuOpen(false)}
-            aria-hidden="true"
+            className="absolute inset-0 bg-brand-plum/40 backdrop-blur-sm"
+            onClick={() => setIsSearchOpen(false)}
+            aria-hidden
           />
-          <div className="absolute top-0 left-0 bottom-0 w-4/5 max-w-xs bg-brand-ivory shadow-xl flex flex-col animate-in slide-in-from-left duration-300">
-            <div className="p-4 border-b border-brand-gold/20 flex items-center justify-between">
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                <img src={headerLogo} alt={siteName} className="h-9 w-auto object-contain drop-shadow-sm" />
-              </Link>
+          <div className="relative w-full max-w-xl glass-frosted rounded-2xl p-6 md:p-8 animate-scale-in">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="boutique-section-eyebrow mb-1">Discover</p>
+                <h3 className="font-serif text-2xl text-brand-plum">Search the collection</h3>
+              </div>
               <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 -mr-2 text-brand-brown hover:text-brand-black"
-                aria-label="Close menu"
+                onClick={() => setIsSearchOpen(false)}
+                className="w-10 h-10 flex items-center justify-center rounded-full text-brand-plum/60 hover:text-brand-plum hover:bg-brand-latte/60 transition-colors"
+                aria-label="Close search"
               >
-                <i className="ri-close-line text-2xl"></i>
+                <i className="ri-close-line text-2xl" />
               </button>
             </div>
-
-            <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-3">
-              {[
-                { label: 'Home', href: '/' },
-                { label: 'Shop', href: '/shop' },
-                { label: 'Categories', href: '/categories' },
-                { label: 'About', href: '/about' },
-                { label: 'Contact', href: '/contact' },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block py-3 text-sm uppercase tracking-[0.2em] font-semibold text-brand-black hover:text-brand-gold transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
+            <form onSubmit={handleSearch}>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Try dresses, tops, sets..."
+                  className="boutique-input pr-14 text-base"
+                  autoFocus
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-brand-plum text-brand-cream hover:bg-brand-dark transition-colors"
+                  aria-label="Submit search"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="h-px bg-brand-gold/20 my-6"></div>
-              {[
-                { label: 'Track Order', href: '/order-tracking' },
-                { label: 'Wishlist', href: '/wishlist' },
-                { label: 'My Account', href: '/account' },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block py-3 text-sm font-medium text-brand-brown hover:text-brand-black transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="p-4 border-t border-brand-gold/20">
-              <p className="text-xs text-brand-brown text-center">
-                &copy; {new Date().getFullYear()} {siteName}
-              </p>
-            </div>
+                  <i className="ri-arrow-right-line text-lg" />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
     </>
   );
+
+  if (!mounted) return null;
+
+  return createPortal(headerContent, document.body);
 }

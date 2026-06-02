@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, LOGO_PATH } from '@/lib/site-brand';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -260,9 +261,9 @@ export default function AdminLayout({
         `}
       >
         <div className="h-full px-4 py-6 overflow-y-auto">
-          <Link href="/admin" className="flex items-center mb-8 px-2 cursor-pointer">
-            <span className="text-xl font-['Pacifico'] text-blue-700">House of Elle</span>
-            <span className="ml-3 text-sm font-semibold text-gray-500">ADMIN</span>
+          <Link href="/admin" className="flex items-center gap-3 mb-8 px-2 cursor-pointer">
+            <img src={LOGO_PATH} alt={SITE_NAME} className="h-8 w-auto max-w-[140px] object-contain" />
+            <span className="text-sm font-semibold text-gray-500">ADMIN</span>
           </Link>
 
           <nav className="space-y-1">

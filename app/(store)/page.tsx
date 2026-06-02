@@ -1,458 +1,207 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Fragment } from 'react';
+import {
+  SITE_NAME,
+  HERO_HEADLINE,
+  HERO_SUBHEADLINE,
+  HERO_SLIDES,
+  FEATURED_BENEFITS,
+  CUSTOMER_REVIEWS,
+  ABOUT_HEADLINE,
+  ABOUT_BODY,
+} from '@/lib/site-brand';
+import { MOCK_SHOP_CATEGORIES, MOCK_FEATURED_PRODUCTS } from '@/lib/mock-catalog';
 import Link from 'next/link';
-import Image from 'next/image';
-import { supabase } from '@/lib/supabase';
-import ProductCard, { type ColorVariant, getColorHex } from '@/components/ProductCard';
-import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';
+import HeroImageSlider from '@/components/HeroImageSlider';
+import MockCategoryCard from '@/components/MockCategoryCard';
+import MockProductCard from '@/components/MockProductCard';
 import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import NewsletterSection from '@/components/NewsletterSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
 export default function Home() {
   usePageTitle('');
-  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-  const [homepageCategories, setHomepageCategories] = useState<any[]>([]);
-
-  const [loading, setLoading] = useState(true);
-
-  // Config State - Managed in Code
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const renderNameWithStyledAmpersand = (text: string) =>
-    text.split('&').map((part, index, arr) => (
-      <Fragment key={`${part}-${index}`}>
-        {part}
-        {index < arr.length - 1 && <span className="font-sans not-italic text-[0.9em] align-middle">&amp;</span>}
-      </Fragment>
-    ));
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const config: {
-    hero: {
-      headline: string;
-      subheadline: string;
-      primaryButtonText: string;
-      primaryButtonLink: string;
-      secondaryButtonText: string;
-      secondaryButtonLink: string;
-      backgroundImage?: string;
-    };
-    banners?: Array<{ text: string; active: boolean }>;
-  } = {
-    hero: {
-      headline: 'House of Elle — Luxury Fragrances for Everyone',
-      subheadline: 'Shop perfumes, splashes, diffusers, scented candles, kids perfumes, body sprays, body butters, scented body lotions, and gift sets.',
-      primaryButtonText: 'Shop Collections',
-      primaryButtonLink: '/shop',
-      secondaryButtonText: 'Our Story',
-      secondaryButtonLink: '/about',
-      // backgroundImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop' // Optional override
-    },
-    banners: [
-      { text: '📍 Visit us at Spintex Lashibi, Shalom Spot Junction', active: false },
-      { text: '📞 Call 0553347531 for wholesale & retail orders', active: false },
-      { text: '✨ New arrivals in perfumes, diffusers, candles, and gift sets', active: false }
-    ]
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // Fetch featured products directly from Supabase
-        const { data: productsData, error: productsError } = await supabase
-          .from('products')
-          .select('*, product_variants(*), product_images(*)')
-          .eq('status', 'active')
-          .eq('featured', true)
-          .order('created_at', { ascending: false })
-          .limit(8);
-
-        if (productsError) throw productsError;
-        setFeaturedProducts(productsData || []);
-
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from('categories')
-          .select('id, name, slug, image_url, description, metadata, created_at')
-          .eq('status', 'active')
-          .order('created_at', { ascending: false });
-
-        if (categoriesError) throw categoriesError;
-
-        const activeCategories = categoriesData || [];
-        const featuredCategories = activeCategories.filter((category: any) => category?.metadata?.featured);
-        const categoriesForHomepage = (featuredCategories.length > 0 ? featuredCategories : activeCategories).slice(0, 4);
-        setHomepageCategories(categoriesForHomepage);
-
-      } catch (error: unknown) {
-        const err = error as { message?: string; code?: string };
-        const msg = err?.message ?? (error instanceof Error ? error.message : String(error));
-        const code = err?.code ?? '';
-        if (code === 'PGRST205') {
-          console.warn('Products table not found. Run Supabase migrations to create the schema.');
-        } else {
-          console.error('Error fetching data:', msg, code ? `(${code})` : '');
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-
-  const getHeroImage = () => {
-    if (config.hero.backgroundImage) return config.hero.backgroundImage;
-    return "/house-of-elle-logo.png";
-  };
-
-  const renderBanners = () => {
-    const activeBanners = config.banners?.filter(b => b.active) || [];
-    if (activeBanners.length === 0) return null;
-
-    return (
-      <div className="bg-brand-black text-brand-gold py-2 overflow-hidden relative border-b border-brand-gold/30">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {activeBanners.concat(activeBanners).map((banner, index) => (
-            <span key={index} className="mx-8 text-sm font-semibold tracking-wide flex items-center">
-              {banner.text}
-            </span>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   return (
-    <main className="flex-col items-center justify-between min-h-screen">
-      {renderBanners()}
-
-      {/* Hero Section - House of Elle Signature */}
-      <section className="relative w-full h-[86vh] md:h-[94vh] overflow-hidden bg-brand-black">
-        {/* Progress Bar */}
-        <div className="absolute top-0 left-0 right-0 z-30 h-1 bg-brand-ivory/15">
-          <div
-            key={currentSlide}
-            className="h-full bg-brand-gold animate-progress origin-left"
-            style={{ animationDuration: '3000ms' }}
-          ></div>
+    <main className="min-h-screen bg-brand-cream">
+      {/* SECTION 1 — HERO */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-brand-latte">
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-cream via-brand-latte/80 to-brand-nude/30" />
+        <div className="absolute top-1/4 -left-20 w-72 h-72 rounded-full bg-brand-rose/10 blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 -right-16 w-96 h-96 rounded-full bg-brand-sage/10 blur-3xl animate-float animate-delay-300" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-[0.04] pointer-events-none select-none">
+          <span className="font-serif text-[14vw] text-brand-plum whitespace-nowrap tracking-tight">BOUTIQUE</span>
         </div>
 
-        {[
-          {
-            image: '/Whisk_4e28dc6bf0d6be98458435c0c2950e3ddr.jpeg',
-            tag: 'Signature Drops',
-            heading: <>House of Elle <br /><span className="font-accent font-normal text-brand-champagne block mt-2">Fragrance Rituals</span></>,
-            subtext: 'Curated perfumes, body mists, and scent layers selected for bold everyday elegance.',
-            cta: { text: 'Shop Signature', href: '/shop' },
-            cta2: { text: 'Explore Categories', href: '/categories' },
-            position: 'object-center'
-          },
-          {
-            image: '/Whisk_50c2f050b440b4b95064c372c1ec7ee1dr.jpeg',
-            tag: 'Body Care Studio',
-            heading: <>Layer. Glow. <br /><span className="font-accent font-normal text-brand-champagne block mt-2">Repeat Daily</span></>,
-            subtext: 'From sprays to butters and lotions, build a scent routine that stays with you all day.',
-            cta: { text: 'Shop Body Care', href: '/shop?search=body' },
-            cta2: { text: 'Read Our Story', href: '/about' },
-            position: 'object-top'
-          },
-          {
-            image: '/Whisk_64e2698834d1476801a4b505b30c324bdr.jpeg',
-            tag: 'Retail + Wholesale',
-            heading: <>Accra's Scent <br /><span className="font-accent font-normal text-brand-champagne block mt-2">Destination</span></>,
-            subtext: 'Shop personal favorites or place bulk orders with trusted value and premium quality.',
-            cta: { text: 'Shop Gift Sets', href: '/shop?search=gift' },
-            cta2: { text: 'Contact House of Elle', href: '/contact' },
-            position: 'object-center'
-          },
-        ].map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-          >
-            <div className={`absolute inset-0 ${index === currentSlide ? 'animate-ken-burns' : ''}`}>
-              <Image
-                src={slide.image}
-                alt={`House of Elle hero ${index + 1}`}
-                fill
-                className={`object-cover ${slide.position}`}
-                priority={index === 0}
-                quality={84}
-                sizes="100vw"
-              />
-            </div>
-
-            {/* Clean luxury overlay - dark left for text readability, fading to clear right */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
-            <div className="absolute inset-0 px-6 md:px-12 lg:px-16 py-14 md:py-20">
-              <div className="h-full max-w-7xl mx-auto grid md:grid-cols-[1fr_320px] gap-8 items-center">
-                <div className="text-left">
-                  <div className={`transition-all duration-700 delay-100 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <span className="inline-flex items-center gap-3 mb-6 text-brand-gold text-[10px] md:text-xs tracking-[0.3em] uppercase font-bold">
-                      <span className="w-6 h-[1px] bg-brand-gold/60"></span>
-                      {slide.tag}
-                      <span className="w-6 h-[1px] bg-brand-gold/60 md:hidden"></span>
-                    </span>
-                  </div>
-
-                  <div className={`transition-all duration-700 delay-200 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-4 md:mb-6 leading-[1.05] drop-shadow-lg">
-                      {slide.heading}
-                    </h1>
-                  </div>
-
-                  <div className={`transition-all duration-700 delay-300 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <p className="text-sm md:text-xl text-brand-ivory/90 max-w-2xl mb-8 md:mb-9 font-light leading-relaxed drop-shadow">
-                      {slide.subtext}
-                    </p>
-                  </div>
-
-                  <div className={`flex flex-col sm:flex-row items-stretch sm:items-start gap-3 sm:gap-4 transition-all duration-700 delay-400 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <Link
-                      href={slide.cta.href}
-                      className="group relative w-full sm:w-auto text-center px-8 py-3.5 btn-gold rounded-full font-semibold text-sm md:text-base overflow-hidden transition-all hover:scale-105"
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-2">
-                        {slide.cta.text}
-                        <i className="ri-arrow-right-line transition-transform group-hover:translate-x-1"></i>
-                      </span>
-                    </Link>
-                    <Link
-                      href={slide.cta2.href}
-                      className="w-full sm:w-auto text-center px-8 py-3.5 bg-white/10 border border-white/30 text-white rounded-full font-medium text-sm md:text-base backdrop-blur-sm hover:bg-white/20 hover:border-white transition-all"
-                    >
-                      {slide.cta2.text}
-                    </Link>
-                  </div>
-                </div>
-
-                <div className={`hidden md:block transition-all duration-700 delay-500 ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                  <div className="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-md p-6 text-brand-ivory shadow-2xl">
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-brand-gold mb-4 font-bold">House of Elle Edit</p>
-                    <ul className="space-y-3 text-sm text-brand-ivory/85">
-                      <li className="flex items-center gap-2"><i className="ri-check-line text-brand-gold"></i> Perfumes and body mists</li>
-                      <li className="flex items-center gap-2"><i className="ri-check-line text-brand-gold"></i> Candles and diffusers</li>
-                      <li className="flex items-center gap-2"><i className="ri-check-line text-brand-gold"></i> Kids and family-friendly scents</li>
-                    </ul>
-                    <div className="mt-6 pt-4 border-t border-brand-gold/25 text-xs text-brand-ivory/70">
-                      Spintex Lashibi, Shalom Spot Junction - Accra
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-          {[0, 1, 2].map((i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === i ? 'w-12 bg-brand-gold' : 'w-6 bg-brand-ivory/45 hover:bg-brand-ivory/70'}`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="absolute bottom-10 right-4 md:right-10 z-20 hidden md:block">
-          <div className="text-brand-ivory/45 text-[11px] font-light tracking-[0.25em] vertical-text transform rotate-180" style={{ writingMode: 'vertical-rl' }}>
-            HOUSE OF ELLE — ACCRA, GHANA
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section - God Level Redesign */}
-      <section className="py-20 md:py-32 bg-brand-ivory relative overflow-hidden">
-        {/* Decorative Background Element */}
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
-
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-          <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div className="relative">
-              <span className="block text-sm font-bold tracking-[0.2em] text-brand-gold mb-3 uppercase">Olfactory Families</span>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-brand-black leading-[1.1]">
-                Shop by <span className="italic text-brand-brown">Category</span>
-              </h2>
-            </div>
-            <div className="flex items-center gap-6">
-              <p className="hidden md:block text-brand-brown max-w-xs text-right font-medium leading-relaxed">
-                Explore our curated collection of fragrances, categorized by their dominant notes.
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <AnimatedSection>
+              <p className="text-[10px] font-semibold tracking-[0.32em] uppercase text-brand-rose mb-5 flex items-center gap-3">
+                <span className="h-px w-8 bg-brand-rose/50" />
+                {SITE_NAME}
               </p>
-              <Link href="/categories" className="group flex items-center justify-center w-14 h-14 rounded-full border border-brand-gold/50 hover:border-brand-gold hover:bg-brand-gold hover:text-brand-black transition-all duration-300 text-brand-gold">
-                <i className="ri-arrow-right-line text-xl transition-transform group-hover:translate-x-1"></i>
-              </Link>
-            </div>
-          </AnimatedSection>
+              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] text-brand-plum leading-[1.02] mb-6">
+                {HERO_HEADLINE}
+              </h1>
+              <p className="text-brand-plum/75 text-lg md:text-xl max-w-lg mb-10 leading-relaxed font-light">
+                {HERO_SUBHEADLINE}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/shop" className="boutique-btn-primary">
+                  Enter the shop
+                </Link>
+                <Link href="#shop-by-category" className="boutique-btn-secondary">
+                  Browse collections
+                </Link>
+              </div>
+            </AnimatedSection>
 
-          <AnimatedGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {homepageCategories.map((category: any, index: number) => {
-              const tintClasses = ['bg-blue-900', 'bg-rose-900', 'bg-amber-900', 'bg-stone-900'];
-              const tint = tintClasses[index % tintClasses.length];
-              const categoryImage = category.image_url || '/Whisk_4e28dc6bf0d6be98458435c0c2950e3ddr.jpeg';
-              const categorySubtitle = category.description || 'Curated fragrance collection';
-
-              return (
-              <Link href={`/shop?category=${category.slug}`} key={category.id} className="group block h-full w-full">
-                <div className="relative aspect-[3/4] overflow-hidden isolate bg-gray-900 shadow-2xl rounded-3xl">
-
-                  {/* Image: Cinematic Slow Zoom & Brightness Shift */}
-                  <div className="absolute inset-0 transition-transform duration-[1500ms] ease-out group-hover:scale-110 opacity-90 group-hover:opacity-100">
-                    <Image
-                      src={categoryImage}
-                      alt={category.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    />
-                  </div>
-
-                  {/* Cinematic Grading Overlays */}
-                  {/* 1. Base Darkening Gradient (Bottom Up) */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 transition-opacity duration-700 group-hover:opacity-90"></div>
-
-                  {/* 2. Color Tint Overlay (Mix Blend) */}
-                  <div className={`absolute inset-0 ${tint} mix-blend-overlay opacity-40 transition-opacity duration-700 group-hover:opacity-50`}></div>
-
-                  {/* 3. Top Down Vignette for depth */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent opacity-60"></div>
-
-                  {/* Content Container */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end z-10">
-
-                    {/* Floating 'Explore' Tag - Reveals on Hover */}
-                    <div className="absolute top-8 right-8 overflow-hidden">
-                      <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-[10px] font-bold text-white tracking-widest uppercase transform translate-y-[-150%] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                        Explore <i className="ri-arrow-right-line"></i>
-                      </span>
-                    </div>
-
-                    {/* Category Title */}
-                    <div className="overflow-hidden">
-                      <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl text-white leading-[1] mb-3 transform transition-transform duration-700 ease-out group-hover:-translate-y-2 drop-shadow-xl">
-                        {renderNameWithStyledAmpersand(category.name)}
-                      </h3>
-                    </div>
-
-                    {/* Decorative Line */}
-                    <div className="h-[1px] w-12 bg-white/60 mb-4 transition-all duration-700 ease-out group-hover:w-full group-hover:bg-white/90"></div>
-
-                    {/* Subtitle / Description */}
-                    <div className="overflow-hidden">
-                      <p className="text-white/80 font-light text-sm tracking-widest uppercase transform translate-y-full opacity-0 transition-all duration-700 ease-out group-hover:translate-y-0 group-hover:opacity-100 delay-100">
-                        {categorySubtitle}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Premium Border Frame Effect */}
-                  <div className="absolute inset-5 border border-white/20 scale-[0.95] opacity-0 transition-all duration-700 ease-out group-hover:scale-100 group-hover:opacity-100 pointer-events-none z-20">
-                    {/* Corner Accents */}
-                    <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/60"></div>
-                    <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/60"></div>
-                    <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/60"></div>
-                    <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/60"></div>
-                  </div>
-
-                </div>
-              </Link>
-            )})}
-          </AnimatedGrid>
-          {homepageCategories.length === 0 && (
-            <div className="mt-8 rounded-2xl border border-brand-gold/25 bg-white/60 p-8 text-center text-brand-brown">
-              No categories available yet. Add categories in admin and mark them as featured to show here.
-            </div>
-          )}
+            <AnimatedSection delay={150}>
+              <div className="relative md:p-4 md:glass-card md:rounded-[2rem] md:shadow-boutique-lg">
+                <HeroImageSlider slides={HERO_SLIDES} />
+              </div>
+            </AnimatedSection>
+          </div>
         </div>
       </section>
 
-
-      {/* Best sellers */}
-      <section className="py-16 md:py-24 bg-stone-50">
+      {/* SECTION 2 — TRUST STRIP (tablet & desktop only) */}
+      <section className="hidden md:block py-10 md:py-14 bg-brand-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="text-center mb-16">
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-gray-900 mb-4">Best sellers</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Top picks from our latest arrivals</p>
-          </AnimatedSection>
-
-          {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-              {[...Array(4)].map((_, i) => (
-                <ProductCardSkeleton key={i} />
+          <div className="relative rounded-2xl glass-frosted overflow-hidden">
+            <div
+              className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-rose/60 to-transparent"
+              aria-hidden
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-brand-rose/15">
+              {FEATURED_BENEFITS.map((benefit, i) => (
+                <div
+                  key={benefit.title}
+                  className="group relative px-6 py-8 md:px-8 md:py-10 text-center"
+                >
+                  <span
+                    className={`block font-serif text-2xl md:text-3xl tabular-nums mb-3 transition-colors duration-300 ${
+                      i === 0 ? 'text-brand-sage/70 group-hover:text-brand-sage' : 'text-brand-rose/25 group-hover:text-brand-rose/50'
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="block w-6 h-px bg-brand-rose/50 mx-auto mb-4 group-hover:w-10 transition-all duration-300" />
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-rose mb-2">
+                    {benefit.label}
+                  </p>
+                  <p className="font-serif text-base md:text-lg text-brand-plum leading-snug">
+                    {benefit.title}
+                  </p>
+                </div>
               ))}
             </div>
-          ) : (
-            <AnimatedGrid className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-              {featuredProducts.map((product) => {
-                const variants = product.product_variants || [];
-                const hasVariants = variants.length > 0;
-                const minVariantPrice = hasVariants ? Math.min(...variants.map((v: any) => v.price || product.price)) : undefined;
-                const totalVariantStock = hasVariants ? variants.reduce((sum: number, v: any) => sum + (v.quantity || 0), 0) : 0;
-                const effectiveStock = hasVariants ? totalVariantStock : product.quantity;
+          </div>
+        </div>
+      </section>
 
-                // Extract unique colors from option2
-                const colorVariants: ColorVariant[] = [];
-                const seenColors = new Set<string>();
-                for (const v of variants) {
-                  const colorName = (v as any).option2;
-                  if (colorName && !seenColors.has(colorName.toLowerCase().trim())) {
-                    const hex = getColorHex(colorName);
-                    if (hex) {
-                      seenColors.add(colorName.toLowerCase().trim());
-                      colorVariants.push({ name: colorName.trim(), hex });
-                    }
-                  }
-                }
+      {/* SECTION 3 — SHOP BY CATEGORY */}
+      <section id="shop-by-category" className="py-16 md:py-24 bg-brand-cream scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-12 md:mb-16">
+            <span className="boutique-section-eyebrow">Explore</span>
+            <h2 className="boutique-section-title mb-3">Shop By Category</h2>
+            <p className="text-brand-plum/70">Four ways to find your next outfit.</p>
+          </AnimatedSection>
+          <AnimatedGrid className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+            {MOCK_SHOP_CATEGORIES.map((cat, i) => (
+              <MockCategoryCard
+                key={cat.id}
+                label={cat.label}
+                href={cat.href}
+                image={cat.image}
+                index={i}
+              />
+            ))}
+          </AnimatedGrid>
+        </div>
+      </section>
 
-                return (
-                  <ProductCard
-                    key={product.id}
-                    id={product.id}
-                    slug={product.slug}
-                    name={product.name}
-                    price={product.price}
-                    originalPrice={product.compare_at_price}
-                    image={product.product_images?.[0]?.url || 'https://via.placeholder.com/400x500'}
-                    rating={product.rating_avg || 5}
-                    reviewCount={product.review_count || 0}
-                    badge={product.featured ? 'Featured' : undefined}
-                    inStock={effectiveStock > 0}
-                    maxStock={effectiveStock || 50}
-                    moq={product.moq || 1}
-                    hasVariants={hasVariants}
-                    minVariantPrice={minVariantPrice}
-                    colorVariants={colorVariants}
-                  />
-                );
-              })}
-            </AnimatedGrid>
-          )}
-
-          <div className="text-center mt-16">
-            <Link
-              href="/shop"
-              className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-10 py-4 rounded-full font-semibold hover:bg-brand-champagne transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 btn-animate"
-            >
-              View All Products
+      {/* SECTION 4 — FEATURED PRODUCTS */}
+      <section id="featured-products" className="py-16 md:py-24 bg-white/60 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-12 md:mb-16">
+            <span className="boutique-section-eyebrow text-brand-sage">Curated For You</span>
+            <h2 className="boutique-section-title mb-3">Featured Pieces</h2>
+            <p className="text-brand-plum/70">Standout pieces from dresses, sets, tops, and more.</p>
+          </AnimatedSection>
+          <AnimatedGrid className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8">
+            {MOCK_FEATURED_PRODUCTS.map((product) => (
+              <MockProductCard
+                key={product.id}
+                name={product.name}
+                category={product.category}
+                price={product.price}
+                originalPrice={'originalPrice' in product ? product.originalPrice : undefined}
+                image={product.image}
+                tagline={product.tagline}
+                href="/shop"
+              />
+            ))}
+          </AnimatedGrid>
+          <div className="text-center mt-12">
+            <Link href="/shop" className="boutique-btn-secondary">
+              View all pieces
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Newsletter - Homepage Only */}
-      <NewsletterSection />
+      {/* SECTION 5 — CUSTOMER REVIEWS */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-12 md:mb-16">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-brand-plum mb-3">
+              Loved By Fashion Lovers Across Ghana
+            </h2>
+          </AnimatedSection>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {CUSTOMER_REVIEWS.map((review, i) => (
+              <div
+                key={i}
+                className="glass-card rounded-2xl p-6 md:p-8 boutique-card-hover"
+              >
+                <div className="flex gap-0.5 text-brand-rose mb-4">
+                  {[...Array(review.rating)].map((_, j) => (
+                    <i key={j} className="ri-star-fill text-sm" />
+                  ))}
+                </div>
+                <p className="text-brand-plum/90 text-sm md:text-base leading-relaxed">&ldquo;{review.text}&rdquo;</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
+      {/* SECTION 6 — ABOUT */}
+      <section className="py-16 md:py-24 bg-brand-latte/50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <AnimatedSection>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-brand-plum mb-6">{ABOUT_HEADLINE}</h2>
+            <p className="text-brand-plum/80 text-lg leading-relaxed">{ABOUT_BODY}</p>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 mt-8 text-brand-plum font-semibold hover:text-brand-rose transition-colors"
+            >
+              Learn more <i className="ri-arrow-right-line" />
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* SECTION 7 — NEWSLETTER */}
+      <section className="py-16 md:py-20 bg-brand-cream">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="glass-frosted rounded-3xl p-8 md:p-12">
+            <NewsletterSection />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

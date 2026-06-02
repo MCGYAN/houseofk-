@@ -1,5 +1,17 @@
 'use client';
 
+import {
+  SITE_NAME,
+  SITE_TAGLINE,
+  LOGO_PATH,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  BUSINESS_ADDRESS,
+  SOCIAL_INSTAGRAM,
+  SOCIAL_TIKTOK,
+  SOCIAL_SNAPCHAT,
+  resolveSiteLogo,
+} from '@/lib/site-brand';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -34,7 +46,7 @@ interface CMSContent {
     image_url: string | null;
     button_text: string | null;
     button_url: string | null;
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
     is_active: boolean;
 }
 
@@ -67,23 +79,23 @@ interface CMSContextType {
 }
 
 const defaultSettings: SiteSettings = {
-    site_name: 'House of Elle',
-    site_tagline: 'Luxury fragrances for everyone.',
-    site_logo: '/house-of-elle-logo.png',
-    contact_email: 'support@houseofelle.com',
-    contact_phone: '0553347531',
-    contact_whatsapp: '0553347531',
-    contact_address: 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana',
+    site_name: SITE_NAME,
+    site_tagline: SITE_TAGLINE,
+    site_logo: LOGO_PATH,
+    contact_email: CONTACT_EMAIL,
+    contact_phone: CONTACT_PHONE,
+    contact_whatsapp: CONTACT_PHONE,
+    contact_address: BUSINESS_ADDRESS,
     social_facebook: '',
-    social_instagram: 'https://instagram.com/houseof_elle',
+    social_instagram: SOCIAL_INSTAGRAM,
     social_twitter: '',
-    social_tiktok: 'https://tiktok.com/@houseof_elle',
-    social_snapchat: '',
+    social_tiktok: SOCIAL_TIKTOK,
+    social_snapchat: SOCIAL_SNAPCHAT,
     social_youtube: '',
-    primary_color: '#C89B3C',
-    secondary_color: '#F5EDE4',
-    currency: 'GHS',
-    currency_symbol: 'GH₵',
+    primary_color: '#4A2C3D',
+    secondary_color: '#BF8F7A',
+    currency: 'USD',
+    currency_symbol: '$',
 };
 
 const CMSContext = createContext<CMSContextType>({
@@ -98,51 +110,55 @@ const CMSContext = createContext<CMSContextType>({
 });
 
 export function CMSProvider({ children }: { children: ReactNode }) {
-    const [settings, setSettings] = useState<SiteSettings>({
-        site_name: 'House of Elle',
-        site_tagline: 'Luxury fragrances for everyone.',
-        site_logo: '/house-of-elle-logo.png',
-        contact_email: 'support@houseofelle.com',
-        contact_phone: '0553347531',
-        contact_whatsapp: '0553347531',
-        contact_address: 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana',
-        social_facebook: '',
-        social_instagram: 'https://instagram.com/houseof_elle',
-        social_twitter: '',
-        social_tiktok: 'https://tiktok.com/@houseof_elle',
-        social_snapchat: '',
-        social_youtube: '',
-        primary_color: '#C89B3C',
-        secondary_color: '#F5EDE4',
-        currency: 'GHS',
-        currency_symbol: 'GH₵',
-    });
+    const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
     const [content, setContent] = useState<CMSContent[]>([]);
     const [banners, setBanners] = useState<Banner[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    // CMS Fetching Logic Removed - Content is now managed in code.
-    const fetchCMSData = async () => { };
+    const fetchCMS = async () => {
+        try {
+            const [settingsRes, contentRes, bannersRes] = await Promise.all([
+                supabase.from('site_settings').select('*'),
+                supabase.from('cms_content').select('*').eq('is_active', true),
+                supabase.from('banners').select('*').eq('is_active', true),
+            ]);
 
-    // Initial load handled by state defaults
+            if (settingsRes.data) {
+                const settingsMap: Record<string, string> = {};
+                settingsRes.data.forEach((s: { key: string; value: string }) => {
+                    settingsMap[s.key] = s.value;
+                });
+                if (settingsMap.site_logo) {
+                    settingsMap.site_logo = resolveSiteLogo(settingsMap.site_logo);
+                }
+                setSettings({ ...defaultSettings, ...settingsMap });
+            }
+
+            if (contentRes.data) setContent(contentRes.data);
+            if (bannersRes.data) setBanners(bannersRes.data);
+        } catch (error) {
+            console.error('CMS fetch error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
+        fetchCMS();
     }, []);
 
-    const getContent = (section: string, blockKey: string): CMSContent | undefined => {
-        return content.find(c => c.section === section && c.block_key === blockKey);
-    };
+    const getContent = (section: string, blockKey: string) =>
+        content.find((c) => c.section === section && c.block_key === blockKey);
 
-    const getSetting = (key: string): string => {
-        return settings[key] || defaultSettings[key] || '';
-    };
+    const getSetting = (key: string) => settings[key] || '';
 
-    const getActiveBanners = (position?: string): Banner[] => {
+    const getActiveBanners = (position?: string) => {
         const now = new Date();
-        return banners.filter(b => {
+        return banners.filter((b) => {
             if (position && b.position !== position) return false;
             if (b.start_date && new Date(b.start_date) > now) return false;
             if (b.end_date && new Date(b.end_date) < now) return false;
-            return b.is_active;
+            return true;
         });
     };
 
@@ -156,7 +172,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
                 getContent,
                 getSetting,
                 getActiveBanners,
-                refreshCMS: fetchCMSData,
+                refreshCMS: fetchCMS,
             }}
         >
             {children}
@@ -164,12 +180,4 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     );
 }
 
-export function useCMS() {
-    const context = useContext(CMSContext);
-    if (!context) {
-        throw new Error('useCMS must be used within a CMSProvider');
-    }
-    return context;
-}
-
-export default CMSContext;
+export const useCMS = () => useContext(CMSContext);

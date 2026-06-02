@@ -6,12 +6,12 @@ const resend = new Resend(process.env.RESEND_API_KEY || 'missing_api_key');
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'support@example.com';
 const EMAIL_FROM = process.env.EMAIL_FROM || 'Storefront <support@example.com>';
 const BRAND = {
-    name: 'Storefront',
+    name: process.env.NEXT_PUBLIC_SITE_NAME || 'YOUR_APP_TITLE',
     color: '#2563eb',
     colorLight: '#eff6ff',
-    colorDark: '#064e3b',
-    url: (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/+$/, ''),
-    phone: '+0000000000',
+    colorDark: '#1e3a5f',
+    url: (process.env.NEXT_PUBLIC_APP_URL || 'https://yourdomain.com').replace(/\/+$/, ''),
+    phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || 'YOUR_PHONE_NUMBER',
 };
 
 // Reusable branded email layout
@@ -30,7 +30,7 @@ ${preheader ? `<span style="display:none;max-height:0;overflow:hidden;">${prehea
 <!-- Header -->
 <tr><td style="background:linear-gradient(135deg,${BRAND.color},${BRAND.colorDark});padding:32px 40px;text-align:center;">
 <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">${BRAND.name}</h1>
-<p style="margin:6px 0 0;color:rgba(255,255,255,0.8);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;">Perfumes · Wholesale & Retail</p>
+<p style="margin:6px 0 0;color:rgba(255,255,255,0.8);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;">YOUR_TAGLINE</p>
 </td></tr>
 
 <!-- Body -->

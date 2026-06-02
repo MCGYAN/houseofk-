@@ -58,8 +58,8 @@ export default function CartPage() {
   const total = subtotal - couponDiscount + shipping;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <PageHero title="Shopping Cart" backgroundImage="/Whisk_a4071984faa45f6b45b4ac8f2119754ddr.jpeg" />
+    <div className="min-h-screen bg-brand-cream">
+      <PageHero title="Shopping Cart" />
       <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <CartCountdown />
@@ -73,8 +73,8 @@ export default function CartPage() {
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
               <p className="text-gray-600 mb-8 text-lg">Looks like you&#39;t added anything to your cart yet</p>
-              <Link href="/shop" className="inline-block bg-gray-900 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors whitespace-nowrap">
-                Continue Shopping
+              <Link href="/shop" className="boutique-btn-primary">
+                Continue shopping
               </Link>
             </div>
           </section>
@@ -243,7 +243,7 @@ export default function CartPage() {
 
                     <Link
                       href="/checkout"
-                      className="block w-full bg-blue-700 hover:bg-blue-800 text-white py-4 rounded-lg font-semibold text-center transition-colors mt-6 mb-3 whitespace-nowrap"
+                      className="block w-full boutique-btn-primary text-center mt-6 mb-3"
                     >
                       Proceed to Checkout
                     </Link>

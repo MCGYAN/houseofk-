@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, LOGO_PATH } from '@/lib/site-brand';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -130,7 +131,7 @@ export default function PaymentPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <span className="text-2xl font-['Pacifico'] text-blue-700">House of Elle</span>
+            <img src={LOGO_PATH} alt={SITE_NAME} className="h-10 w-auto max-w-[200px] object-contain" />
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">Complete Your Payment</h1>
           <p className="text-gray-600 mt-2">Hi {customerName}, your order is waiting for payment.</p>

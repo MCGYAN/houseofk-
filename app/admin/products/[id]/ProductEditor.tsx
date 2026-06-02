@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -425,7 +426,7 @@ export default function ProductEditor({ productId }: { productId: string }) {
                 </label>
                 <input
                   type="text"
-                  defaultValue="House of Elle, perfumes wholesale and retail, Spintex Lashibi, Shalom Spot Junction, Accra, Ghana"
+                  defaultValue="SITE_NAME, perfumes wholesale and retail, BUSINESS_ADDRESS"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <p className="text-sm text-gray-500 mt-2">Separate keywords with commas</p>

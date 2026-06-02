@@ -1,3 +1,4 @@
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { jsPDF } from 'jspdf';
 
 export type CatalogProduct = {
@@ -151,7 +152,7 @@ export async function generateProductCatalogPdf(
     const rowY = y;
 
     // Image
-    if (product.imageUrl && !product.imageUrl.includes('house-of-elle-logo')) {
+    if (product.imageUrl && !product.imageUrl.includes('logo-placeholder')) {
       const loaded = await loadImageAsDataUrl(product.imageUrl);
       if (loaded) {
         try {
@@ -211,5 +212,5 @@ export async function generateProductCatalogPdf(
   }
 
   const fileDate = new Date().toISOString().slice(0, 10);
-  doc.save(`house-of-elle-catalog-${fileDate}.pdf`);
+  doc.save(`${CATALOG_PDF_PREFIX}-${fileDate}.pdf`);
 }

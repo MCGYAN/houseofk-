@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -57,7 +58,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <img src="/house-of-elle-logo.png" alt="House of Elle" className="h-20 w-auto mx-auto object-contain drop-shadow-md" />
+            <img src={LOGO_PATH} alt={SITE_NAME} className="h-20 w-auto mx-auto object-contain drop-shadow-md" />
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-2">Admin Login</h1>
           <p className="text-gray-600">Sign in to access the admin dashboard</p>

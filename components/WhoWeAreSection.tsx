@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedSection from './AnimatedSection';
@@ -17,7 +18,7 @@ export default function WhoWeAreSection() {
             </h2>
             <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
               <p>
-                <strong>House of Elle</strong> is your premier destination for perfumes, both wholesale and retail. Based in Spintex Lashibi, Shalom Spot Junction, Accra, Ghana, we offer a curated range of fragrances at competitive prices for resellers and individual customers.
+                <strong>{SITE_NAME}</strong> is your store. Update this copy in <code>components/WhoWeAreSection.tsx</code>. Based in {BUSINESS_ADDRESS}.
               </p>
               <p>
                 We focus on quality and value. Whether you're stocking up for your business or shopping for yourself, we handpick our perfumes to deliver genuine products and great prices.
@@ -38,8 +39,8 @@ export default function WhoWeAreSection() {
           <AnimatedSection className="order-1 lg:order-2 relative" delay={200}>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl relative group">
               <Image
-                src="/house-of-elle-logo.png"
-                alt="House of Elle — Premium perfumes"
+                src={LOGO_PATH}
+                alt={SITE_NAME}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 50vw"

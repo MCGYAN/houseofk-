@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
@@ -284,7 +285,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
           {/* Header */}
           <div className="flex justify-between items-start border-b-2 border-gray-800 pb-4 mb-4">
             <div>
-              <h1 className="text-2xl font-bold">House of Elle</h1>
+              <h1 className="text-2xl font-bold">{SITE_NAME}</h1>
               <p className="text-sm text-gray-600">Order Packing Slip</p>
             </div>
             <div className="text-right">
@@ -345,8 +346,8 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
 
           {/* Footer */}
           <div className="border-t-2 border-gray-800 pt-4 text-center text-sm text-gray-600">
-            <p>Thank you for shopping with House of Elle!</p>
-            <p>Questions? Call 0553347531 or WhatsApp 0553347531 · support@houseofelle.com</p>
+            <p>Thank you for shopping with {SITE_NAME}!</p>
+            <p>Questions? Call CONTACT_PHONE or WhatsApp CONTACT_PHONE · CONTACT_EMAIL</p>
           </div>
         </div>
       </div>

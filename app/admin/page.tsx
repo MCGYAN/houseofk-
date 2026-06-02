@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
@@ -185,7 +186,7 @@ export default function AdminDashboard() {
           setTopProducts(productData.map((p: any) => ({
             id: p.slug, // Use slug for link
             name: p.name,
-            image: p.product_images?.[0]?.url || '/house-of-elle-logo.png',
+            image: p.product_images?.[0]?.url || LOGO_PATH,
             sales: 0, // Mocked for now
             revenue: 0, // Mocked for now
             stock: p.quantity

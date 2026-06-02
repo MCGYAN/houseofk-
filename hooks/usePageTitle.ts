@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-
-const SITE_NAME = 'House of Elle';
+import { SITE_NAME, SITE_TAGLINE } from '@/lib/site-brand';
 
 export function usePageTitle(title: string) {
   useEffect(() => {
-    document.title = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | Luxury fragrances for everyone`;
+    document.title = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | ${SITE_TAGLINE}`;
   }, [title]);
 }

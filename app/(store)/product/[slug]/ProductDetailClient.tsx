@@ -234,9 +234,9 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white py-12 flex justify-center items-center">
+      <div className="min-h-screen bg-brand-cream py-12 flex justify-center items-center">
         <div className="text-center">
-          <i className="ri-loader-4-line text-4xl text-blue-700 animate-spin mb-4 block"></i>
+          <i className="ri-loader-4-line text-4xl text-brand-rose animate-spin mb-4 block" />
           <p className="text-gray-500">Loading product...</p>
         </div>
       </div>
@@ -245,10 +245,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white py-20 flex justify-center items-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
-          <Link href="/shop" className="text-blue-700 hover:underline">Return to Shop</Link>
+      <div className="min-h-screen bg-brand-cream py-20 flex justify-center items-center">
+        <div className="text-center boutique-panel max-w-md mx-4 p-10">
+          <h2 className="font-serif text-2xl text-brand-plum mb-4">Piece not found</h2>
+          <Link href="/shop" className="boutique-btn-primary inline-flex">Return to the edit</Link>
         </div>
       </div>
     );
@@ -282,7 +282,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
       <StructuredData data={productSchema} />
       <StructuredData data={breadcrumbSchema} />
 
-      <main className="min-h-screen bg-gradient-to-b from-brand-ivory/40 via-white to-brand-ivory/20">
+      <main className="min-h-screen bg-brand-cream">
         <section className="py-6 bg-brand-ivory/50 border-b border-brand-gold/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <nav className="flex items-center space-x-2 text-sm flex-wrap gap-y-2">
@@ -341,7 +341,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 )}
               </div>
 
-              <div className="bg-white border border-brand-gold/20 rounded-3xl p-5 sm:p-7 shadow-[0_15px_40px_rgba(10,10,10,0.06)]">
+              <div className="boutique-panel !rounded-3xl p-5 sm:p-7">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <p className="text-xs uppercase tracking-[0.24em] text-brand-gold font-bold mb-2">{product.category}</p>
@@ -593,7 +593,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <button
                     disabled={activeStock === 0 || needsVariantSelection || needsColorSelection}
-                    className={`flex-1 bg-brand-black hover:bg-brand-brown text-brand-ivory py-4 rounded-xl font-semibold transition-colors flex items-center justify-center space-x-2 text-lg whitespace-nowrap cursor-pointer border border-brand-gold/20 ${(activeStock === 0 || needsVariantSelection || needsColorSelection) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`flex-1 boutique-btn-primary !py-4 !text-base w-full sm:w-auto ${(activeStock === 0 || needsVariantSelection || needsColorSelection) ? 'opacity-50 cursor-not-allowed hover:translate-y-0' : ''}`}
                     onClick={handleAddToCart}
                   >
                     <i className="ri-shopping-cart-line text-xl"></i>
@@ -602,7 +602,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                   {activeStock > 0 && !needsVariantSelection && !needsColorSelection && (
                     <button
                       onClick={handleBuyNow}
-                      className="sm:w-auto bg-brand-gold hover:bg-brand-champagne text-brand-black px-8 py-4 rounded-xl font-semibold transition-colors whitespace-nowrap cursor-pointer"
+                      className="sm:w-auto boutique-btn-secondary !py-4"
                     >
                       Buy Now
                     </button>
@@ -689,7 +689,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
         </section>
 
         {relatedProducts.length > 0 && (
-          <section className="py-20 bg-white" data-product-shop>
+          <section className="py-20 bg-brand-latte/30" data-product-shop>
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               <div className="text-center mb-12">
                 <h2 className="text-3xl lg:text-4xl font-serif text-brand-black mb-4">You May Also Like</h2>

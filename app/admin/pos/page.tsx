@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -84,7 +85,7 @@ export default function POSPage() {
                     price: p.price,
                     quantity: p.quantity,
                     category: p.categories?.name || 'Uncategorized',
-                    image: p.product_images?.[0]?.url || '/house-of-elle-logo.png',
+                    image: p.product_images?.[0]?.url || LOGO_PATH,
                     sku: p.sku
                 }));
                 setProducts(formatted);

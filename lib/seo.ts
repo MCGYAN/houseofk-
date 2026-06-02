@@ -1,15 +1,22 @@
+import {
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  BUSINESS_CITY,
+  BUSINESS_COUNTRY,
+  OG_IMAGE_PATH,
+} from '@/lib/site-brand';
 import type { Metadata } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://yourdomain.com';
 
 export const SEO_KEYWORDS = [
-  'women’s fashion Ghana',
-  'boutique Accra',
-  'stylish outfits Ghana',
-  'ladies wear Accra',
-  'premium fashion Ghana',
-  'House of Elle',
-];
+  "women's fashion Ghana",
+  'trendy outfits Kasoa',
+  'affordable fashion Ghana',
+  'House of K',
+  BUSINESS_CITY,
+  BUSINESS_COUNTRY,
+].filter(Boolean);
 
 type SeoInput = {
   title: string;
@@ -18,7 +25,12 @@ type SeoInput = {
   image?: string;
 };
 
-export function buildPageMetadata({ title, description, path = '', image = '/opengraph-image' }: SeoInput): Metadata {
+export function buildPageMetadata({
+  title,
+  description,
+  path = '',
+  image = OG_IMAGE_PATH,
+}: SeoInput): Metadata {
   return {
     title,
     description,
@@ -31,9 +43,8 @@ export function buildPageMetadata({ title, description, path = '', image = '/ope
       description,
       type: 'website',
       url: `${siteUrl}${path}`,
-      images: [{ url: image, width: 1200, height: 630 }],
-      locale: 'en_GH',
-      siteName: 'House of Elle',
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
+      siteName: SITE_NAME,
     },
     twitter: {
       card: 'summary_large_image',
@@ -51,37 +62,32 @@ export function buildPageMetadata({ title, description, path = '', image = '/ope
 export const pageSeoTemplates = {
   home: () =>
     buildPageMetadata({
-      title: 'House of Elle | Premium Women’s Fashion in Accra',
-      description:
-        'Shop premium women’s fashion at House of Elle. Discover stylish, modern outfits designed for confidence and elegance. Located in Accra, Ghana.',
+      title: `${SITE_NAME} | Trendy Women's Fashion in Kasoa`,
+      description: SITE_DESCRIPTION,
       path: '/',
     }),
   shop: () =>
     buildPageMetadata({
-      title: 'Shop Women’s Fashion in Accra | House of Elle',
-      description:
-        'Browse premium women’s fashion at House of Elle. Discover confidence-boosting outfits curated for modern women in Accra and beyond.',
+      title: `Shop | ${SITE_NAME}`,
+      description: `Browse trendy women's fashion at ${SITE_NAME}. New arrivals and best sellers.`,
       path: '/shop',
     }),
   categories: () =>
     buildPageMetadata({
-      title: 'Fashion Categories | House of Elle',
-      description:
-        'Explore fashion categories at House of Elle and find premium styles for work, events, and everyday elegance in Accra, Ghana.',
+      title: `Categories | ${SITE_NAME}`,
+      description: `Shop dresses, sets, tops, jeans & more at ${SITE_NAME}.`,
       path: '/categories',
     }),
   about: () =>
     buildPageMetadata({
-      title: 'About House of Elle | Premium Fashion Brand',
-      description:
-        'Learn about House of Elle, a premium fashion and lifestyle brand in Accra serving modern women with elegant, confidence-led style.',
+      title: `About | ${SITE_NAME}`,
+      description: `Meet ${SITE_NAME} — trendy women's fashion based in Ofaakor, Kasoa, Ghana.`,
       path: '/about',
     }),
   contact: () =>
     buildPageMetadata({
-      title: 'Contact House of Elle | Accra Boutique',
-      description:
-        'Contact House of Elle in Spintex Lashibi, Accra. Reach us for personal styling support, orders, and premium fashion enquiries.',
+      title: `Contact | ${SITE_NAME}`,
+      description: `Get in touch with ${SITE_NAME} in Kasoa, Ghana.`,
       path: '/contact',
     }),
 };

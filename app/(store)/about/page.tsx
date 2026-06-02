@@ -1,5 +1,13 @@
 'use client';
 
+import {
+  SITE_NAME,
+  SITE_TAGLINE,
+  LOGO_PATH,
+  BUSINESS_ADDRESS,
+  ABOUT_HEADLINE,
+  ABOUT_BODY,
+} from '@/lib/site-brand';
 import Link from 'next/link';
 import { useCMS } from '@/context/CMSContext';
 import PageHero from '@/components/PageHero';
@@ -9,7 +17,7 @@ export default function AboutPage() {
   usePageTitle('Our Story');
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'House of Elle';
+  const siteName = getSetting('site_name') || SITE_NAME;
 
   const values = [
     {
@@ -24,13 +32,13 @@ export default function AboutPage() {
     },
     {
       icon: 'ri-global-line',
-      title: 'Curated Fragrances',
-      description: 'Perfumes, splashes, diffusers, scented candles, kids perfumes, body sprays, body butters, scented body lotions, and gift sets.'
+      title: 'Curated Style',
+      description: 'Trendy pieces handpicked for women who love to stand out — dresses, sets, tops, and more.',
     },
     {
       icon: 'ri-truck-line',
       title: 'Nationwide Delivery',
-      description: 'Based in Spintex Lashibi, Accra, we deliver quickly and reliably across Ghana for personal and business orders.'
+      description: `Based in ${BUSINESS_ADDRESS}, we deliver to our service area.`
     }
   ];
 
@@ -38,9 +46,8 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         eyebrow="Our Story"
-        title="The House of Elle Story"
-        subtitle="From Spintex Lashibi to fragrance lovers across Ghana, we curate scents and body care with elegance, value, and consistency."
-        backgroundImage="/Whisk_743db4f33bd7ec08b0f46aec28e929cfdr.jpeg"
+        title={`About ${SITE_NAME}`}
+        subtitle="Trendy fashion for confident women in Kasoa and across Ghana."
       />
 
       {/* Who We Are - Hero section */}
@@ -50,11 +57,9 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl md:text-4xl font-serif text-gray-900 mb-6">Who We Are</h2>
               <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
+                <p><strong>{SITE_NAME}</strong> {ABOUT_BODY}</p>
                 <p>
-                  <strong>House of Elle</strong> is a fragrance and body-care destination built for people who love quality, elegance, and value. We serve both retail shoppers and wholesale buyers from our store at Spintex Lashibi, Shalom Spot Junction, Accra.
-                </p>
-                <p>
-                  We curate perfumes, splashes, diffusers, scented candles, kids perfumes, body sprays, body butters, scented body lotions, and gift sets for everyday luxury.
+                  We&apos;re not a luxury fashion house — we&apos;re a modern boutique for women aged 18–35 who want outfits that turn heads without spending a fortune.
                 </p>
                 <div className="pt-4">
                   <Link
@@ -70,8 +75,8 @@ export default function AboutPage() {
             <div className="relative mt-8 lg:mt-0">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl relative">
                 <img
-                  src="/Whisk_743db4f33bd7ec08b0f46aec28e929cfdr.jpeg"
-                  alt="House of Elle — Premium perfumes"
+                  src={LOGO_PATH}
+                  alt={siteName}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -81,8 +86,8 @@ export default function AboutPage() {
                     <i className="ri-medal-line text-xl sm:text-2xl"></i>
                   </div>
                   <div>
-                    <p className="font-bold text-gray-900 text-sm sm:text-base">Curated Luxury</p>
-                    <p className="text-xs sm:text-sm text-gray-500">For retail & wholesale</p>
+                    <p className="font-bold text-brand-mocha text-sm sm:text-base">Trendy & Affordable</p>
+                    <p className="text-xs sm:text-sm text-brand-mocha/60">Ofaakor, Kasoa</p>
                   </div>
                 </div>
               </div>
@@ -94,7 +99,7 @@ export default function AboutPage() {
       <section id="our-story" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <span className="inline-block text-brand-gold text-xs tracking-[0.24em] uppercase font-bold mb-3">Our Mission</span>
-          <h2 className="text-3xl md:text-4xl font-serif text-gray-900">What Drives House of Elle</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-gray-900">What Drives {siteName}</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="bg-brand-ivory p-10 rounded-3xl border border-brand-gold/20">
@@ -122,7 +127,7 @@ export default function AboutPage() {
       <div className="bg-gray-50 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Customers Choose House of Elle</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Customers Choose {siteName}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">Trusted for quality products, fair pricing, and reliable service.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -144,7 +149,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-900">
           <h2 className="text-4xl md:text-5xl font-serif mb-8">Ready to Build Your Signature Scent Wardrobe?</h2>
           <p className="text-xl text-brand-brown mb-10 leading-relaxed max-w-2xl mx-auto">
-            Explore perfumes, body care, diffusers, candles, and gift sets. For orders, call or WhatsApp 0553347531.
+            Explore our latest dresses, sets, tops, and accessories. Based in {BUSINESS_ADDRESS}.
           </p>
           <Link
             href="/shop"

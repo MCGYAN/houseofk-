@@ -1,3 +1,15 @@
+import {
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  SITE_TAGLINE,
+  LOGO_PATH,
+  CONTACT_PHONE,
+  BUSINESS_ADDRESS,
+  BUSINESS_CITY,
+  BUSINESS_COUNTRY,
+  SOCIAL_INSTAGRAM,
+  SOCIAL_TIKTOK,
+} from '@/lib/site-brand';
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { CartProvider } from "@/context/CartContext";
@@ -8,7 +20,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#C89B3C',
+  themeColor: '#4A2C3D',
 };
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
@@ -17,22 +29,15 @@ const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://example.com';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "House of Elle | Premium Women’s Fashion in Accra",
-    template: "%s | House of Elle"
+    default: `${SITE_NAME} | ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "Shop premium women’s fashion at House of Elle. Discover stylish, modern outfits designed for confidence and elegance. Located in Accra, Ghana.",
-  keywords: [
-    "women’s fashion Ghana",
-    "boutique Accra",
-    "stylish outfits Ghana",
-    "ladies wear Accra",
-    "premium fashion Ghana",
-    "House of Elle"
-  ],
-  authors: [{ name: "House of Elle" }],
-  creator: "House of Elle",
-  publisher: "House of Elle",
-  applicationName: "House of Elle",
+  description: SITE_DESCRIPTION,
+  keywords: [SITE_NAME, "women's fashion", 'Kasoa', 'Ghana fashion', BUSINESS_CITY].filter(Boolean),
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  applicationName: SITE_NAME,
   referrer: "origin-when-cross-origin",
   robots: {
     index: true,
@@ -46,20 +51,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [
-      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon/favicon.png', sizes: '48x48', type: 'image/png' },
-      { url: '/favicon/favicon.ico', sizes: 'any' },
-    ],
-    shortcut: '/favicon/favicon.ico',
-    apple: '/favicon/apple-touch-icon.png',
+    icon: [{ url: '/favicon.ico', sizes: 'any' }],
+    apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'House of Elle',
+    title: SITE_NAME,
   },
   formatDetection: {
     telephone: true,
@@ -73,23 +72,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GH",
     url: siteUrl,
-    title: "House of Elle | Premium Women’s Fashion",
-    description: "Elevate your style with House of Elle.",
-    siteName: "House of Elle",
+    title: `${SITE_NAME} | ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
     images: [
       {
-        url: "/opengraph-image",
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: "House of Elle - Elevate Your Style",
-        type: "image/png",
+        alt: SITE_NAME,
+        type: 'image/png',
       },
     ],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "House of Elle",
-    description: "Modern fashion for confident women.",
+    card: 'summary_large_image',
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     images: ["/opengraph-image"],
   },
   alternates: {
@@ -112,32 +111,27 @@ export default function RootLayout({
     <html lang="en-GH">
       <head>
         {/* PWA Meta Tags */}
-        <meta name="theme-color" content="#C89B3C" />
+        <meta name="theme-color" content="#4A2C3D" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="House of Elle" />
+        <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-TileColor" content="#C89B3C" />
+        <meta name="msapplication-TileColor" content="#4A2C3D" />
         <meta name="msapplication-tap-highlight" content="no" />
 
-        {/* Favicon from public/favicon */}
-        <link rel="icon" href="/favicon/favicon-32x32.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />
-        <link rel="shortcut icon" href="/favicon/favicon.ico" />
-
-        {/* Apple Touch Icons from public/favicon */}
-        <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
-        <link rel="apple-touch-startup-image" href="/favicon/apple-touch-icon.png" />
+        {/* FAVICON — add /public/favicon.ico and /public/apple-touch-icon.png */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         <link rel="canonical" href={siteUrl} />
         <meta name="robots" content="index,follow" />
-        <meta property="og:title" content="House of Elle | Premium Women’s Fashion" />
-        <meta property="og:description" content="Elevate your style with House of Elle." />
+        <meta property="og:title" content={`${SITE_NAME} | ${SITE_TAGLINE}`} />
+        <meta property="og:description" content={SITE_DESCRIPTION} />
         <meta property="og:image" content={`${siteUrl}/opengraph-image`} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="House of Elle" />
-        <meta name="twitter:description" content="Modern fashion for confident women." />
+        <meta name="twitter:title" content={SITE_NAME} />
+        <meta name="twitter:description" content={SITE_DESCRIPTION} />
         <meta name="twitter:image" content={`${siteUrl}/opengraph-image`} />
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
@@ -158,38 +152,33 @@ export default function RootLayout({
                 {
                   "@type": "Organization",
                   "@id": `${siteUrl}#organization`,
-                  "name": "House of Elle",
+                  "name": SITE_NAME,
                   "url": siteUrl,
-                  "logo": `${siteUrl}/house-of-elle-logo.png`,
-                  "image": `${siteUrl}/house-of-elle-logo.png`,
-                  "description": "Premium women’s fashion and lifestyle boutique in Accra, Ghana.",
-                  "sameAs": [
-                    "https://www.instagram.com/houseof_elle",
-                    "https://www.tiktok.com/@houseof_elle"
-                  ],
+                  "logo": `${siteUrl}${LOGO_PATH}`,
+                  "image": `${siteUrl}${LOGO_PATH}`,
+                  "description": SITE_DESCRIPTION,
+                  "sameAs": [SOCIAL_INSTAGRAM, SOCIAL_TIKTOK].filter(Boolean),
                   "contactPoint": {
                     "@type": "ContactPoint",
                     "contactType": "customer service",
-                    "telephone": "+233553347531",
+                    "telephone": CONTACT_PHONE,
                     "availableLanguage": "English",
-                    "areaServed": "GH"
-                  }
+                  },
                 },
                 {
-                  "@type": "ClothingStore",
+                  "@type": "Store",
                   "@id": `${siteUrl}#store`,
-                  "name": "House of Elle",
-                  "image": `${siteUrl}/house-of-elle-logo.png`,
+                  "name": SITE_NAME,
+                  "image": `${siteUrl}${LOGO_PATH}`,
                   "url": siteUrl,
-                  "telephone": "+233553347531",
-                  "priceRange": "$$",
+                  "telephone": CONTACT_PHONE,
                   "address": {
                     "@type": "PostalAddress",
-                    "streetAddress": "Spintex Lashibi, Shalom Spot Junction",
-                    "addressLocality": "Accra",
-                    "addressCountry": "GH"
-                  }
-                }
+                    "streetAddress": BUSINESS_ADDRESS,
+                    "addressLocality": BUSINESS_CITY,
+                    "addressCountry": BUSINESS_COUNTRY,
+                  },
+                },
               ]
             })
           }}
@@ -227,7 +216,7 @@ export default function RootLayout({
       <body className="antialiased font-sans overflow-x-hidden pwa-body">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-6 focus:py-3 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:font-semibold focus:shadow-lg"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-6 focus:py-3 focus:bg-brand-plum focus:text-brand-cream focus:rounded-full focus:font-semibold focus:shadow-boutique-lg"
         >
           Skip to main content
         </a>

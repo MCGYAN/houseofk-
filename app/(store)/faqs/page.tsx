@@ -1,5 +1,6 @@
 "use client";
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -25,7 +26,7 @@ export default function FAQsPage() {
     {
       category: 'orders',
       question: 'Can I modify or cancel my order?',
-      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately via WhatsApp 0553347531 or Call 0553347531 or email support@houseofelle.com. Once an order is processed, modifications may not be possible.'
+      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately via WhatsApp CONTACT_PHONE or Call CONTACT_PHONE or email CONTACT_EMAIL. Once an order is processed, modifications may not be possible.'
     },
     {
       category: 'orders',
@@ -218,7 +219,7 @@ export default function FAQsPage() {
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">Still Have Questions?</h2>
           <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-            Our House of Elle team is ready to help with product and wholesale enquiries.
+            Our SITE_NAME team is ready to help with product and wholesale enquiries.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link

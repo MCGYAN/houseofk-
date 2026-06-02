@@ -1,5 +1,6 @@
-// Storefront - Service Worker v2.2
-const CACHE_VERSION = 'storefront-v2.2';
+// Service Worker — update CACHE_VERSION when deploying
+const CACHE_VERSION = 'app-v3-house-of-k';
+const LOGO_PATH = '/logo.png?v=2';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
@@ -14,7 +15,7 @@ const STATIC_ASSETS = [
   '/account',
   '/categories',
   '/offline',
-  '/house-of-elle-logo.png',
+  LOGO_PATH,
 ];
 
 // Cache size limits
@@ -224,8 +225,8 @@ self.addEventListener('push', (event) => {
   const data = event.data.json();
   const options = {
     body: data.body || 'New update from Storefront',
-    icon: '/house-of-elle-logo.png',
-    badge: '/house-of-elle-logo.png',
+    icon: LOGO_PATH,
+    badge: LOGO_PATH,
     vibrate: [100, 50, 100],
     data: {
       url: data.url || '/',
@@ -239,7 +240,7 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(
-      data.title || 'Storefront',
+      data.title || 'YOUR_APP_TITLE',
       options
     )
   );

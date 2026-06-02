@@ -9,7 +9,6 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import NavigationProgress from '@/components/NavigationProgress';
 import CookieConsent from '@/components/CookieConsent';
 import { CMSProvider } from '@/context/CMSContext';
-
 // Lazy-load non-critical components
 import dynamic from 'next/dynamic';
 const SessionTimeoutWarning = dynamic(() => import('@/components/SessionTimeoutWarning'), { ssr: false });
@@ -33,17 +32,16 @@ export default function StoreLayout({
         <NavigationProgress />
       </Suspense>
       <ScrollToTop />
-      <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="min-h-screen bg-brand-cream boutique-grain store-page-shell">
         <PWASplash />
         <PWAInstaller />
-        <Header />
         <ErrorBoundary>
           <div className="pwa-page-enter">
             {children}
           </div>
         </ErrorBoundary>
         <Footer />
-        <MobileBottomNav />
         <SessionTimeoutWarning />
         <PWAPrompt />
         <PushNotificationManager />
@@ -53,6 +51,7 @@ export default function StoreLayout({
         <LiveSalesNotification />
         <CookieConsent />
       </div>
+      <MobileBottomNav />
     </CMSProvider>
   );
 }

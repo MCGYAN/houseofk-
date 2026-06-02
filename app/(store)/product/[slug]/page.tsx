@@ -1,3 +1,4 @@
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import type { Metadata } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import ProductDetailClient from './ProductDetailClient';
@@ -24,13 +25,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     if (!product) {
       return {
-        title: 'Product | House of Elle',
-        description: 'Premium fashion and lifestyle essentials by House of Elle.',
+        title: `Product | ${SITE_NAME}`,
+        description: `Products at ${SITE_NAME}.`,
       };
     }
 
-    const title = `${product.name} - House of Elle`;
-    const description = (product.description || `Shop ${product.name} at House of Elle, Accra.`).slice(0, 155);
+    const title = `${product.name} - ${SITE_NAME}`;
+    const description = (product.description || `Shop ${product.name} at ${SITE_NAME}.`).slice(0, 155);
     const image = product.product_images?.[0]?.url || `${siteUrl}/opengraph-image`;
 
     return {

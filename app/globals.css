@@ -4,12 +4,22 @@
 @tailwind utilities;
 
 :root {
-  --brand-royal-gold: #c89b3c;
-  --brand-deep-black: #0a0a0a;
-  --brand-warm-ivory: #f5ede4;
-  --brand-champagne-gold: #f8cfa4;
-  --brand-soft-nude: #d8a48f;
-  --brand-muted-brown: #6b4f3a;
+  /* Goddess Palette — Sleek, Expensive & No Black */
+  --brand-plum: #4a2c3d;
+  --brand-burgundy: #4a2c3d;
+  --brand-rose-gold: #bf8f7a;
+  --brand-sage: #84947a;
+  --brand-cream: #faf6ef;
+  /* Legacy aliases */
+  --brand-mocha: var(--brand-plum);
+  --brand-latte: #f0ebe3;
+  --brand-ivory: var(--brand-cream);
+  --brand-gold: var(--brand-rose-gold);
+  --brand-nude: #e8dcd4;
+  --brand-warm-dark: var(--brand-plum);
+  --brand-royal-gold: var(--brand-rose-gold);
+  --brand-deep-black: var(--brand-plum);
+  --brand-champagne: #d4b5a8;
 }
 
 /* ========================================
@@ -128,14 +138,14 @@
 }
 
 .btn-gold {
-  background: linear-gradient(135deg, var(--brand-royal-gold), #A47B30);
-  color: var(--brand-deep-black);
-  box-shadow: 0 4px 14px rgba(200, 155, 60, 0.4);
+  background: linear-gradient(135deg, var(--brand-rose-gold), #a67b68);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(191, 143, 122, 0.35);
   transition: all 0.3s ease;
 }
 .btn-gold:hover {
-  background: linear-gradient(135deg, #A47B30, var(--brand-royal-gold));
-  box-shadow: 0 6px 20px rgba(200, 155, 60, 0.6);
+  background: linear-gradient(135deg, #a67b68, var(--brand-rose-gold));
+  box-shadow: 0 6px 20px rgba(191, 143, 122, 0.5);
   transform: translateY(-2px);
 }
 
@@ -316,7 +326,7 @@
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(200, 155, 60, 0.4);
+  box-shadow: 0 0 20px rgba(191, 143, 122, 0.35);
 }
 
 /* ========================================
@@ -360,10 +370,9 @@
    LOADING SKELETON
    ======================================== */
 
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
+.animate-shimmer {
   animation: shimmer 1.5s infinite;
+  background-size: 200% 100%;
 }
 
 /* ========================================
@@ -399,17 +408,78 @@ img {
    ======================================== */
 
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 8px 32px rgba(74, 44, 61, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .glass-dark {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(74, 44, 61, 0.4);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(74, 44, 61, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-cream {
+  background: rgba(250, 246, 239, 0.62);
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 8px 40px rgba(74, 44, 61, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.glass-frosted {
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 12px 48px rgba(74, 44, 61, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.glass-plum {
+  background: rgba(74, 44, 61, 0.32);
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border: 1px solid rgba(191, 143, 122, 0.25);
+  box-shadow:
+    0 12px 40px rgba(74, 44, 61, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: var(--brand-cream);
+}
+
+.glass-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(250, 246, 239, 0.45) 100%
+  );
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 4px 24px rgba(74, 44, 61, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 /* ========================================
@@ -467,8 +537,7 @@ img {
     user-select: text;
   }
 
-  /* Add safe area top padding for the sticky header */
-  header.sticky {
+  header[data-store-header] {
     padding-top: env(safe-area-inset-top, 0px);
   }
 
@@ -483,12 +552,11 @@ img {
   }
 }
 
-/* Ensure bottom padding for mobile nav even in browser mode */
+/* Static bottom nav — mobile only */
 @media (max-width: 1023px) {
-
   main,
   footer {
-    padding-bottom: 80px;
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -636,7 +704,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0a0a0a 0%, #6b4f3a 50%, #c89b3c 100%);
+  background: linear-gradient(135deg, #faf6ef 0%, #4a2c3d 55%, #bf8f7a 100%);
   animation: splashFadeOut 0.5s ease-out 1.5s forwards;
 }
 
@@ -703,4 +771,335 @@ img {
 .vertical-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+
+/* ========================================
+   BOUTIQUE STORE — DESIGN SYSTEM
+   ======================================== */
+
+body {
+  background-color: var(--brand-cream);
+  color: var(--brand-plum);
+}
+
+::selection {
+  background: rgba(191, 143, 122, 0.35);
+  color: var(--brand-plum);
+}
+
+.boutique-grain {
+  position: relative;
+}
+
+.boutique-grain::before {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.boutique-grain > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fixed store chrome — portaled to body, never scrolls away */
+header[data-store-header],
+.store-header-fixed {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 95;
+  max-width: 100vw;
+}
+
+nav[aria-label='Mobile navigation'],
+.mobile-bottom-nav-fixed {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  max-width: 100vw;
+}
+
+/* Offset page content below fixed header */
+.store-page-shell {
+  padding-top: calc(4rem + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 1024px) {
+  .store-page-shell {
+    padding-top: 5rem;
+  }
+
+  header[data-store-header].mobile-header-glass {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: none;
+    box-shadow: none;
+  }
+}
+
+@layer components {
+  .boutique-panel {
+    border-radius: 1rem;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.72) 0%,
+      rgba(255, 255, 255, 0.38) 50%,
+      rgba(250, 246, 239, 0.45) 100%
+    );
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 4px 24px rgba(74, 44, 61, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      0 8px 40px rgba(74, 44, 61, 0.08);
+  }
+
+  .boutique-section-eyebrow {
+    @apply inline-block text-[10px] md:text-xs font-semibold tracking-[0.28em] uppercase text-brand-rose mb-3;
+  }
+
+  .boutique-section-title {
+    @apply font-serif text-3xl sm:text-4xl md:text-5xl text-brand-plum leading-tight;
+  }
+
+  .boutique-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-brand-plum text-brand-cream rounded-full font-semibold text-sm tracking-wide shadow-boutique transition-all duration-300 ease-boutique hover:bg-brand-dark hover:shadow-boutique-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .boutique-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-transparent border-2 border-brand-plum text-brand-plum rounded-full font-semibold text-sm tracking-wide transition-all duration-300 ease-boutique hover:bg-brand-plum hover:text-brand-cream;
+  }
+
+  .boutique-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-2.5 text-brand-plum/80 rounded-full text-sm font-medium transition-colors hover:text-brand-rose hover:bg-brand-latte/60;
+  }
+
+  .boutique-chip {
+    @apply text-xs px-3.5 py-1.5 rounded-full border border-white/50 text-brand-plum/80 transition-all duration-200 hover:border-brand-rose/40 hover:text-brand-plum;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .boutique-chip-active {
+    @apply bg-brand-plum/90 text-brand-cream border-brand-plum/80 shadow-sm backdrop-blur-md;
+  }
+
+  .boutique-input {
+    @apply w-full px-4 py-3 rounded-xl text-brand-plum placeholder:text-brand-plum/40 focus:outline-none focus:ring-2 focus:ring-brand-rose/40 focus:border-brand-rose transition-all;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .boutique-card-hover {
+    @apply transition-all duration-500 ease-boutique;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  @media (hover: hover) {
+    .boutique-card-hover:hover {
+      @apply -translate-y-1 shadow-boutique-lg;
+    }
+  }
+
+  .boutique-card-hover:active {
+    @apply scale-[0.985];
+  }
+
+  .boutique-image-zoom {
+    @apply overflow-hidden;
+  }
+
+  .boutique-image-zoom img,
+  .boutique-image-zoom .boutique-img-target {
+    @apply transition-transform duration-[550ms] ease-boutique will-change-transform;
+  }
+
+  @media (hover: hover) {
+    .group:hover .boutique-image-zoom img,
+    .group:hover .boutique-image-zoom .boutique-img-target {
+      @apply scale-[1.05];
+    }
+  }
+
+  .group:active .boutique-image-zoom img,
+  .group:active .boutique-image-zoom .boutique-img-target {
+    @apply scale-[1.04];
+  }
+
+  /* Soft vignette — visible on tap (mobile) and hover (desktop) */
+  .boutique-image-vignette {
+    @apply pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-brand-plum/35 via-brand-plum/5 to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .group:active .boutique-image-vignette {
+    @apply opacity-100;
+  }
+
+  @media (hover: hover) {
+    .group:hover .boutique-image-vignette {
+      @apply opacity-100;
+    }
+  }
+
+  /* Quick shine sweep on tap */
+  .boutique-image-shine {
+    @apply pointer-events-none absolute inset-0 z-[3] overflow-hidden;
+  }
+
+  .boutique-image-shine::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      108deg,
+      transparent 42%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 58%
+    );
+    transform: translateX(-120%);
+  }
+
+  .group:active .boutique-image-shine::after {
+    animation: boutiqueImageShine 0.65s ease-out forwards;
+  }
+
+  @keyframes boutiqueImageShine {
+    to {
+      transform: translateX(120%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .boutique-card-hover:active {
+      transform: none;
+    }
+
+    .group:active .boutique-image-zoom img,
+    .group:active .boutique-image-zoom .boutique-img-target,
+    .group:hover .boutique-image-zoom img,
+    .group:hover .boutique-image-zoom .boutique-img-target {
+      transform: none;
+    }
+
+    .group:active .boutique-image-shine::after {
+      animation: none;
+    }
+  }
+
+  .boutique-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-brand-rose/35 to-transparent;
+  }
+
+  .boutique-drawer {
+    @apply shadow-boutique-lg flex flex-col;
+    background: rgba(250, 246, 239, 0.72);
+    backdrop-filter: blur(24px) saturate(1.25);
+    -webkit-backdrop-filter: blur(24px) saturate(1.25);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      -12px 0 48px rgba(74, 44, 61, 0.12),
+      inset 1px 0 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .boutique-editorial-hero {
+    @apply relative overflow-hidden bg-brand-plum text-brand-cream;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.boutique-shimmer-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.boutique-shimmer-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: shimmerLine 2.5s ease-in-out infinite;
+}
+
+/* ========================================
+   MOBILE-ONLY LAYOUT (max-width: 1023px)
+   ======================================== */
+
+@keyframes slideUpNav {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1023px) {
+  header[data-store-header],
+  .mobile-header-glass {
+    background: rgba(250, 246, 239, 0.52);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 4px 24px rgba(74, 44, 61, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+
+  .mobile-bottom-nav-glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(1.35);
+    -webkit-backdrop-filter: blur(24px) saturate(1.35);
+    box-shadow:
+      0 -4px 24px rgba(74, 44, 61, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  #shop-by-category {
+    scroll-margin-top: 5rem;
+  }
 }

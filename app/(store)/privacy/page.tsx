@@ -1,3 +1,4 @@
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -281,7 +282,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="text-gray-600 leading-relaxed">
-              To exercise any of these rights, please contact us at <a href="mailto:support@houseofelle.com" className="text-blue-700 font-medium hover:underline">support@houseofelle.com</a> or through your account settings. We will respond within 30 days.
+              To exercise any of these rights, please contact us at <a href="mailto:CONTACT_EMAIL" className="text-blue-700 font-medium hover:underline">CONTACT_EMAIL</a> or through your account settings. We will respond within 30 days.
             </p>
           </section>
 
@@ -384,7 +385,7 @@ export default function PrivacyPage() {
                   <i className="ri-mail-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:support@houseofelle.com" className="text-blue-700 hover:underline">support@houseofelle.com</a>
+                    <a href="mailto:CONTACT_EMAIL" className="text-blue-700 hover:underline">CONTACT_EMAIL</a>
                   </div>
                 </div>
 
@@ -392,7 +393,7 @@ export default function PrivacyPage() {
                   <i className="ri-phone-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <a href="tel:0553347531" className="text-blue-700 hover:underline">0553347531</a> · WhatsApp <a href="https://wa.me/233553347531" className="text-blue-700 hover:underline">0553347531</a>
+                    <a href="tel:CONTACT_PHONE" className="text-blue-700 hover:underline">CONTACT_PHONE</a> · WhatsApp <a href="https://wa.me/233553347531" className="text-blue-700 hover:underline">CONTACT_PHONE</a>
                   </div>
                 </div>
 
@@ -400,7 +401,7 @@ export default function PrivacyPage() {
                   <i className="ri-map-pin-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Address</p>
-                    <p className="text-gray-600">House of Elle<br />Spintex Lashibi, Shalom Spot Junction, Accra, Ghana</p>
+                    <p className="text-gray-600">{SITE_NAME}<br />{BUSINESS_ADDRESS}</p>
                   </div>
                 </div>
               </div>

@@ -1,135 +1,183 @@
-"use client";
+'use client';
 
+import {
+  SITE_NAME,
+  SITE_TAGLINE,
+  CONTACT_EMAIL,
+  BUSINESS_ADDRESS,
+  SOCIAL_INSTAGRAM,
+  SOCIAL_TIKTOK,
+  SOCIAL_SNAPCHAT,
+  FOOTER_LOGO_PATH,
+  SHOP_CATEGORIES,
+} from '@/lib/site-brand';
 import Link from 'next/link';
-import { useState } from 'react';
 import { useCMS } from '@/context/CMSContext';
-
-function FooterSection({ title, children }: { title: string, children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-blue-800/50 lg:border-none last:border-0">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 text-left lg:py-0 lg:cursor-default lg:mb-6"
-      >
-        <h4 className="font-bold text-lg text-white">{title}</h4>
-        <i className={`ri-arrow-down-s-line text-blue-400 text-xl transition-transform duration-300 lg:hidden ${isOpen ? 'rotate-180' : ''}`}></i>
-      </button>
-      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 pb-6' : 'max-h-0 lg:max-h-full lg:overflow-visible'}`}>
-        {children}
-      </div>
-    </div>
-  );
-}
 
 export default function Footer() {
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'House of Elle';
-  const siteTagline = getSetting('site_tagline') || 'Luxury fragrances for everyone.';
-  const contactEmail = getSetting('contact_email') || 'support@houseofelle.com';
-  const contactPhone = getSetting('contact_phone') || '0553347531';
-  const contactWhatsapp = getSetting('contact_whatsapp') || '0553347531';
-  const contactAddress = getSetting('contact_address') || 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana';
-  const siteLogo = getSetting('site_logo') || '/house-of-elle-logo.png';
-  const socialFacebook = getSetting('social_facebook') || '';
-  const socialInstagram = getSetting('social_instagram') || '';
-  const socialTwitter = getSetting('social_twitter') || '';
-  const socialTiktok = getSetting('social_tiktok') || '';
-  const socialSnapchat = getSetting('social_snapchat') || '';
-  const socialYoutube = getSetting('social_youtube') || '';
+  const siteName = getSetting('site_name') || SITE_NAME;
+  const contactEmail = getSetting('contact_email') || CONTACT_EMAIL;
+  const contactAddress = getSetting('contact_address') || BUSINESS_ADDRESS;
+  const socialInstagram = getSetting('social_instagram') || SOCIAL_INSTAGRAM;
+  const socialTiktok = getSetting('social_tiktok') || SOCIAL_TIKTOK;
+  const socialSnapchat = getSetting('social_snapchat') || SOCIAL_SNAPCHAT;
+
+  const shopLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Shop All', href: '/shop' },
+    { label: 'Categories', href: '/categories' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+  ];
+
+  const socialLinks = [
+    { href: socialInstagram, icon: 'ri-instagram-line', label: 'Instagram' },
+    { href: socialTiktok, icon: 'ri-tiktok-fill', label: 'TikTok' },
+    { href: socialSnapchat, icon: 'ri-snapchat-fill', label: 'Snapchat' },
+  ].filter((s) => Boolean(s.href));
 
   return (
-    <footer className="relative mt-12 z-0">
+    <footer className="relative mt-8 md:mt-12 bg-brand-plum text-brand-cream rounded-t-[1.75rem] md:rounded-t-[2.5rem]">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6">
+        {/* Mobile layout */}
+        <div className="md:hidden pt-10 pb-6 space-y-8">
+          <div className="flex flex-col items-center text-center">
+            <Link href="/" className="inline-block mb-4">
+              <img
+                src={FOOTER_LOGO_PATH}
+                alt={siteName}
+                className="h-14 w-auto max-w-[220px] object-contain"
+              />
+            </Link>
+            <p className="font-serif text-lg text-brand-rose">{SITE_TAGLINE}</p>
+          </div>
 
-      {/* Footer Background Shape */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#18120f] via-brand-brown to-[#17110d] rounded-t-[3rem] -z-10 overflow-hidden">
-        {/* Decorative elements inside footer bg */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/60 to-transparent opacity-80"></div>
-        <div className="absolute -top-16 -right-16 w-64 h-64 bg-brand-gold/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-brand-champagne/14 rounded-full blur-3xl"></div>
-      </div>
+          <div className="rounded-2xl border border-brand-cream/10 bg-brand-dark/30 px-5 py-5 space-y-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-rose">Get In Touch</p>
+            <p className="text-sm text-brand-cream/90 leading-relaxed">{contactAddress}</p>
+            <a
+              href={`mailto:${contactEmail}`}
+              className="inline-flex items-center gap-2 text-sm text-brand-cream hover:text-brand-rose transition-colors"
+            >
+              <i className="ri-mail-line text-brand-rose" aria-hidden />
+              {contactEmail}
+            </a>
+          </div>
 
-      <div className="text-white pt-16 pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-rose mb-4">Shop</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+              {shopLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-brand-cream/90 py-1 hover:text-brand-rose transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
 
-            {/* Brand Column */}
-            <div className="lg:col-span-1 space-y-6">
-              <Link href="/" className="inline-block group">
-                <img src={siteLogo} alt={siteName} className="h-24 w-auto object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300" />
-              </Link>
-              <p className="text-brand-ivory/80 leading-relaxed text-sm">
-                {siteTagline} {contactAddress}. Call {contactPhone} · WhatsApp {contactWhatsapp}
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-rose mb-4">Categories</p>
+            <div className="flex flex-wrap gap-2">
+              {SHOP_CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.href}
+                  href={cat.href}
+                  className="text-xs px-3 py-1.5 rounded-full border border-brand-rose/35 text-brand-cream/90 hover:bg-brand-rose/15 hover:text-brand-rose transition-colors"
+                >
+                  {cat.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {socialLinks.length > 0 && (
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-rose mb-4 text-center">
+                Follow Us
               </p>
-
-              <div className="flex gap-3 pt-2">
-                {[
-                  { link: socialInstagram, icon: 'ri-instagram-line' },
-                  { link: socialTiktok, icon: 'ri-tiktok-fill' },
-                  { link: socialSnapchat, icon: 'ri-snapchat-fill' },
-                  { link: socialYoutube, icon: 'ri-youtube-fill' },
-                  { link: socialTwitter, icon: 'ri-twitter-x-fill' },
-                  { link: socialFacebook, icon: 'ri-facebook-fill' }
-                ].map((social, i) => social.link && (
+              <div className="flex justify-center gap-4">
+                {socialLinks.map((social) => (
                   <a
-                    key={i}
-                    href={social.link}
+                    key={social.label}
+                    href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-black/20 border border-brand-gold/50 rounded-full flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-brand-black hover:border-brand-gold transition-all hover:-translate-y-1"
+                    aria-label={social.label}
+                    className="flex flex-col items-center gap-1.5 min-w-[4.5rem]"
                   >
-                    <i className={social.icon}></i>
+                    <span className="w-12 h-12 rounded-full border border-brand-rose/40 flex items-center justify-center text-lg text-brand-rose hover:bg-brand-rose hover:text-brand-plum transition-all">
+                      <i className={social.icon} />
+                    </span>
+                    <span className="text-[10px] text-brand-cream/60">{social.label}</span>
                   </a>
                 ))}
               </div>
             </div>
+          )}
+        </div>
 
-            {/* Links Sections */}
-            <div className="lg:col-span-3 grid md:grid-cols-3 gap-8 lg:gap-12 pl-0 lg:pl-12">
-
-              <div className="space-y-6">
-                <h4 className="font-serif text-xl font-bold text-brand-ivory">Shop</h4>
-                <ul className="space-y-3 text-brand-ivory/75 text-sm">
-                  <li><Link href="/shop" className="hover:text-brand-gold transition-colors">All Products</Link></li>
-                  <li><Link href="/categories" className="hover:text-brand-gold transition-colors">Collections</Link></li>
-                  <li><Link href="/shop?sort=newest" className="hover:text-brand-gold transition-colors">New Arrivals</Link></li>
-                  <li><Link href="/shop?sort=bestsellers" className="hover:text-brand-gold transition-colors">Best Sellers</Link></li>
-                </ul>
-              </div>
-
-              <div className="space-y-6">
-                <h4 className="font-serif text-xl font-bold text-brand-ivory">Support</h4>
-                <ul className="space-y-3 text-brand-ivory/75 text-sm">
-                  <li><Link href="/contact" className="hover:text-brand-gold transition-colors">Contact Us</Link></li>
-                  <li><Link href="/order-tracking" className="hover:text-brand-gold transition-colors">Track Order</Link></li>
-                  <li><Link href="/shipping" className="hover:text-brand-gold transition-colors">Shipping & Delivery</Link></li>
-                  <li><Link href="/returns" className="hover:text-brand-gold transition-colors">Returns & Exchange</Link></li>
-                </ul>
-              </div>
-
-              <div className="space-y-6">
-                <h4 className="font-serif text-xl font-bold text-brand-ivory">Company</h4>
-                <ul className="space-y-3 text-brand-ivory/75 text-sm">
-                  <li><Link href="/about" className="hover:text-brand-gold transition-colors">Our Story</Link></li>
-                  <li><Link href="/privacy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link></li>
-                  <li><Link href="/terms" className="hover:text-brand-gold transition-colors">Terms of Service</Link></li>
-                  <li><Link href="/admin" className="hover:text-brand-gold transition-colors">Admin Access</Link></li>
-                </ul>
-              </div>
-
+        {/* Desktop layout */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16 pt-14 pb-10">
+          <div className="space-y-5">
+            <Link href="/" className="inline-block">
+              <img
+                src={FOOTER_LOGO_PATH}
+                alt={siteName}
+                className="h-16 w-auto max-w-[260px] object-contain"
+              />
+            </Link>
+            <p className="font-serif text-xl text-brand-rose">{SITE_TAGLINE}</p>
+            <div className="text-sm text-brand-cream/80 space-y-1">
+              <p className="font-medium text-brand-cream">{siteName}</p>
+              <p>{contactAddress}</p>
+              <p>
+                <a href={`mailto:${contactEmail}`} className="hover:text-brand-rose transition-colors">
+                  {contactEmail}
+                </a>
+              </p>
             </div>
           </div>
 
-          <div className="border-t border-brand-gold/30 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-ivory/60">
-            <p>&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</p>
-            <div className="flex gap-4 opacity-70 text-brand-gold">
-              <i className="ri-visa-line text-2xl"></i>
-              <i className="ri-mastercard-line text-2xl"></i>
-              <i className="ri-paypal-line text-2xl"></i>
+          <div>
+            <h4 className="font-serif text-lg mb-5 text-brand-rose">Quick Links</h4>
+            <ul className="space-y-2.5 text-sm text-brand-cream/85">
+              {shopLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="hover:text-brand-rose transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-serif text-lg mb-5 text-brand-rose">Follow Us</h4>
+            <div className="flex gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="w-10 h-10 rounded-full border border-brand-rose/40 flex items-center justify-center text-brand-rose hover:bg-brand-rose hover:text-brand-plum transition-all"
+                >
+                  <i className={social.icon} />
+                </a>
+              ))}
             </div>
           </div>
+        </div>
+
+        <div className="border-t border-brand-cream/15 py-6 md:mt-4 md:pt-8 text-center text-xs text-brand-cream/50">
+          <p>&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</p>
         </div>
       </div>
     </footer>

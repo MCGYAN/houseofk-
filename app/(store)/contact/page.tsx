@@ -1,5 +1,6 @@
 "use client";
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { useState, useEffect } from 'react';
 import { useCMS } from '@/context/CMSContext';
 import { supabase } from '@/lib/supabase';
@@ -88,14 +89,14 @@ export default function ContactPage() {
   };
 
   // Get contact details from CMS settings
-  const contactEmail = getSetting('contact_email') || 'support@houseofelle.com';
-  const contactPhone = getSetting('contact_phone') || '0553347531';
-  const contactWhatsapp = getSetting('contact_whatsapp') || '0553347531';
-  const contactAddress = getSetting('contact_address') || 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana';
+  const contactEmail = getSetting('contact_email') || 'CONTACT_EMAIL';
+  const contactPhone = getSetting('contact_phone') || 'CONTACT_PHONE';
+  const contactWhatsapp = getSetting('contact_whatsapp') || 'CONTACT_PHONE';
+  const contactAddress = getSetting('contact_address') || 'BUSINESS_ADDRESS';
 
-  const heroTitle = pageContent?.title || 'Contact House of Elle';
+  const heroTitle = pageContent?.title || `Contact ${SITE_NAME}`;
   const heroSubtitle = pageContent?.subtitle || 'Need help with products or wholesale orders?';
-  const heroContent = pageContent?.content || 'We are happy to help with perfume recommendations, gift sets, and bulk enquiries.';
+  const heroContent = pageContent?.content || 'Questions about sizing, orders, or new drops? We\'re here to help.';
 
   const waNumber = contactWhatsapp.replace(/[^0-9]/g, '');
   const waLink = waNumber.startsWith('0') ? `https://wa.me/233${waNumber.slice(1)}` : `https://wa.me/${waNumber}`;
@@ -129,14 +130,14 @@ export default function ContactPage() {
       title: 'Visit Us',
       value: contactAddress,
       link: 'https://maps.google.com',
-      description: 'Spintex Lashibi, Shalom Spot Junction, Accra, Ghana'
+      description: 'BUSINESS_ADDRESS'
     }
   ];
 
   const faqs = [
     {
       question: 'What are your delivery times?',
-      answer: 'Standard delivery takes 2-5 business days within Ghana. We package every order with care so your fragrances arrive in great condition.'
+      answer: 'Standard delivery takes 2-5 business days across Ghana. We pack every order with care so your outfits arrive in great condition.'
     },
     {
       question: 'Do you offer international shipping?',
@@ -152,9 +153,8 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         eyebrow="Get In Touch"
-        title="Contact House of Elle"
+        title={`Contact ${SITE_NAME}`}
         subtitle="For personal orders, wholesale enquiries, or product guidance, our team is ready to help you choose the right scent."
-        backgroundImage="/Whisk_835b10a10eab0caa2c7419d4a6e01102dr.jpeg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -316,7 +316,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-2xl font-bold mb-3">Need Immediate Help?</h3>
               <p className="text-blue-100 mb-6 leading-relaxed">
-                Our House of Elle support team is available Mon-Sat, 9am-6pm. For urgent enquiries, reach us directly on WhatsApp.
+                Our {SITE_NAME} support team is available during business hours. For urgent enquiries, reach us on WhatsApp.
               </p>
               <a
                 href={waLink}
@@ -337,7 +337,7 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Visit Our Store</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              Prefer to shop in person? Visit House of Elle at Spintex Lashibi, Shalom Spot Junction, Accra, Ghana. We help customers searching for premium fashion and lifestyle picks near me in Accra.
+              Prefer to shop in person? Visit {SITE_NAME} at {BUSINESS_ADDRESS}.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-gray-600">
               <div className="flex items-center gap-2">
@@ -351,8 +351,8 @@ export default function ContactPage() {
             </div>
             <div className="mt-8 rounded-2xl overflow-hidden border border-brand-gold/20 shadow-md">
               <iframe
-                title="House of Elle Location - Spintex Lashibi, Accra"
-                src="https://www.google.com/maps?q=Spintex%20Lashibi%20Shalom%20Spot%20Junction%20Accra&output=embed"
+                title={`${SITE_NAME} location`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(BUSINESS_ADDRESS)}&output=embed`}
                 width="100%"
                 height="320"
                 loading="lazy"

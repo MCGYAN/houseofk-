@@ -1,5 +1,6 @@
 'use client';
 
+import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
 import { useState, useEffect } from 'react';
 
 export default function PushNotificationManager() {
@@ -39,8 +40,8 @@ export default function PushNotificationManager() {
 
         new Notification('Notifications Enabled! 🎉', {
           body: 'You will now receive updates about orders, deals, and more.',
-          icon: '/house-of-elle-logo.png',
-          badge: '/house-of-elle-logo.png',
+          icon: LOGO_PATH,
+          badge: LOGO_PATH,
           tag: 'welcome-notification'
         });
       }
