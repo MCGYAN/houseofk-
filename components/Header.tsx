@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import MiniCart from './MiniCart';
 import { useCart } from '@/context/CartContext';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useCMS } from '@/context/CMSContext';
 
 const NAV_LINKS = [
@@ -49,6 +49,12 @@ export default function Header() {
 
     updateWishlistCount();
     window.addEventListener('wishlistUpdated', updateWishlistCount);
+
+    if (!isSupabaseConfigured()) {
+      return () => {
+        window.removeEventListener('wishlistUpdated', updateWishlistCount);
+      };
+    }
 
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();

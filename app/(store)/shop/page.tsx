@@ -8,6 +8,12 @@ import ProductCard, { type ColorVariant } from '@/components/ProductCard';
 import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';
 import { getColorHex } from '@/components/ProductCard';
 import { supabase } from '@/lib/supabase';
+import {
+  filterMockProducts,
+  getMockCategories,
+  isMockCatalogMode,
+  mockProductToCard,
+} from '@/lib/mock-catalog';
 import { cachedQuery } from '@/lib/query-cache';
 import PageHero from '@/components/PageHero';
 
@@ -41,9 +47,14 @@ function ShopContent() {
     // Search is handled in the fetch function via searchParams directly or we could add a state for it
   }, [searchParams]);
 
-  // Fetch Categories from cached API
+  // Fetch Categories
   useEffect(() => {
     async function fetchCategories() {
+      if (isMockCatalogMode()) {
+        setCategories(getMockCategories());
+        return;
+      }
+
       try {
         const res = await fetch('/api/storefront/categories');
         if (res.ok) {
@@ -63,6 +74,22 @@ function ShopContent() {
       setLoading(true);
       try {
         const search = searchParams.get('search');
+
+        if (isMockCatalogMode()) {
+          const { products, total } = filterMockProducts({
+            search,
+            category: selectedCategory,
+            priceMin: priceRange[0],
+            priceMax: priceRange[1],
+            minRating: selectedRating,
+            sortBy,
+            page,
+            perPage: productsPerPage,
+          });
+          setProducts(products.map(mockProductToCard));
+          setTotalProducts(total);
+          return;
+        }
 
         // Build cache key from all filter params
         const cacheKey = `shop:${selectedCategory}:${search || ''}:${priceRange.join('-')}:${selectedRating}:${sortBy}:${page}`;

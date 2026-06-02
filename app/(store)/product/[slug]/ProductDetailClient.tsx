@@ -4,6 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Fragment, useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import {
+  getMockProductBySlug,
+  getRelatedMockProducts,
+  isMockCatalogMode,
+  mockProductToDetail,
+} from '@/lib/mock-catalog';
 import { cachedQuery } from '@/lib/query-cache';
 import ProductCard from '@/components/ProductCard';
 import ProductReviews from '@/components/ProductReviews';
@@ -53,6 +59,19 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
     async function fetchProduct() {
       try {
         setLoading(true);
+
+        if (isMockCatalogMode()) {
+          const mock = getMockProductBySlug(slug);
+          if (!mock) {
+            setLoading(false);
+            return;
+          }
+          setProduct(mockProductToDetail(mock));
+          setRelatedProducts(getRelatedMockProducts(mock));
+          setLoading(false);
+          return;
+        }
+
         // Fetch main product (cached for 2 minutes)
         const { data: productData, error } = await cachedQuery<{ data: any; error: any }>(
           `product:${slug}`,
@@ -682,7 +701,17 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
 
             {activeTab === 'reviews' && (
               <div id="reviews">
-                <ProductReviews productId={product.id} />
+                {isMockCatalogMode() ? (
+                  <div className="boutique-panel p-8 text-center max-w-lg">
+                    <i className="ri-star-smile-line text-3xl text-brand-rose/60 mb-3 block" />
+                    <p className="font-serif text-xl text-brand-plum mb-2">Reviews coming soon</p>
+                    <p className="text-sm text-brand-plum/60">
+                      Customer reviews will appear here once the store is connected.
+                    </p>
+                  </div>
+                ) : (
+                  <ProductReviews productId={product.id} />
+                )}
               </div>
             )}
           </div>

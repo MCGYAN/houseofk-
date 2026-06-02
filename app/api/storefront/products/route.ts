@@ -1,16 +1,21 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-// Server-side Supabase client (no auth needed for public data)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { getSupabaseServerClient } from '@/lib/supabase';
 
 // Simple in-memory cache
-let cache: { data: any; timestamp: number } | null = null;
+let cache: { data: Record<string, unknown>; timestamp: number } | null = null;
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutes — products don't change frequently
 
 export async function GET(request: Request) {
+    const supabase = getSupabaseServerClient();
+    if (!supabase) {
+        return NextResponse.json([], {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60',
+                'X-Supabase': 'not-configured',
+            },
+        });
+    }
+
     const { searchParams } = new URL(request.url);
     const featured = searchParams.get('featured') === 'true';
     const limit = parseInt(searchParams.get('limit') || '50');
@@ -24,8 +29,8 @@ export async function GET(request: Request) {
         return NextResponse.json(cache.data[cacheKey], {
             headers: {
                 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=1800',
-                'X-Cache': 'HIT'
-            }
+                'X-Cache': 'HIT',
+            },
         });
     }
 
@@ -67,11 +72,12 @@ export async function GET(request: Request) {
         return NextResponse.json(data, {
             headers: {
                 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=1800',
-                'X-Cache': 'MISS'
-            }
+                'X-Cache': 'MISS',
+            },
         });
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error('[Storefront API] Error:', err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

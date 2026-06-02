@@ -1,45 +1,50 @@
-import { SITE_NAME, SITE_TAGLINE, LOGO_PATH, CONTACT_EMAIL, CONTACT_PHONE, BUSINESS_ADDRESS, SOCIAL_INSTAGRAM, SOCIAL_TIKTOK, CATALOG_PDF_PREFIX, OG_IMAGE_PATH, HERO_IMAGE_PATH, DEFAULT_PRODUCT_BRAND } from '@/lib/site-brand';
+import { SITE_NAME } from '@/lib/site-brand';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseServerClient } from '@/lib/supabase';
+import { getMockCategories, type MockCategory } from '@/lib/mock-catalog';
 import PageHero from '@/components/PageHero';
 
-export const revalidate = 0; // Ensure fresh data on every visit
+export const revalidate = 0;
 
-export default async function CategoriesPage() {
-  const { data: categoriesData } = await supabase
-    .from('categories')
-    .select(`
-      id,
-      name,
-      slug,
-      description,
-      image_url,
-      position
-    `)
-    .eq('status', 'active')
-    .order('position', { ascending: true });
+const palette = [
+  { color: 'from-brand-plum/80 to-brand-dark', icon: 'ri-shopping-bag-3-line' },
+  { color: 'from-brand-rose/80 to-brand-plum', icon: 'ri-t-shirt-2-line' },
+  { color: 'from-brand-sage/70 to-brand-plum', icon: 'ri-sparkling-2-line' },
+  { color: 'from-brand-champagne/80 to-brand-rose', icon: 'ri-heart-3-line' },
+  { color: 'from-brand-latte to-brand-rose/60', icon: 'ri-star-smile-line' },
+  { color: 'from-brand-nude/80 to-brand-sage', icon: 'ri-store-3-line' },
+];
 
-  // Palette to cycle through for visual variety since DB doesn't have colors
-  const palette = [
-    { color: 'from-brand-plum/80 to-brand-dark', icon: 'ri-shopping-bag-3-line' },
-    { color: 'from-brand-rose/80 to-brand-plum', icon: 'ri-t-shirt-2-line' },
-    { color: 'from-brand-sage/70 to-brand-plum', icon: 'ri-sparkling-2-line' },
-    { color: 'from-brand-champagne/80 to-brand-rose', icon: 'ri-heart-3-line' },
-    { color: 'from-brand-latte to-brand-rose/60', icon: 'ri-star-smile-line' },
-    { color: 'from-brand-nude/80 to-brand-sage', icon: 'ri-store-3-line' },
-  ];
-
-  const categories = ((categoriesData as any[]) || []).map((c, i) => {
+function mapCategories(categoriesData: MockCategory[]) {
+  return categoriesData.map((c, i) => {
     const style = palette[i % palette.length];
     return {
       ...c,
       image: c.image_url || 'https://via.placeholder.com/600x400?text=Category',
       color: style.color,
       icon: style.icon,
-      // Optional: Fetch product count if needed, currently skipping for performance/simplicity
       productCount: 'Browse',
     };
   });
+}
+
+export default async function CategoriesPage() {
+  const supabase = getSupabaseServerClient();
+  let categoriesData: MockCategory[] = getMockCategories();
+
+  if (supabase) {
+    const { data } = await supabase
+      .from('categories')
+      .select('id, name, slug, description, image_url, position, parent_id')
+      .eq('status', 'active')
+      .order('position', { ascending: true });
+
+    if (data?.length) {
+      categoriesData = data as MockCategory[];
+    }
+  }
+
+  const categories = mapCategories(categoriesData);
 
   return (
     <div className="min-h-screen bg-brand-cream">
