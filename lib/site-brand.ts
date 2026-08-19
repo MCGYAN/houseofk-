@@ -1,9 +1,9 @@
 /**
- * House of K — brand identity & site copy
+ * Covered by OH — brand identity & site copy
  */
 
-export const SITE_NAME = 'House of K';
-export const SITE_SHORT_NAME = 'House of K';
+export const SITE_NAME = 'Covered by OH';
+export const SITE_SHORT_NAME = 'Covered by OH';
 export const SITE_DESCRIPTION =
   'Trendy women\'s fashion in Kasoa, Ghana. Stylish outfits that turn heads — without breaking the bank.';
 export const SITE_TAGLINE = 'Made To Be Seen.';
@@ -41,17 +41,17 @@ export const HERO_IMAGE_VERSION = '2';
 export const HERO_IMAGE_PATH = `/hero.jpg?v=${HERO_IMAGE_VERSION}`;
 
 export const HERO_SLIDES = [
-  { src: `/hero.jpg?v=${HERO_IMAGE_VERSION}`, alt: 'Woman browsing trendy fashion at House of K boutique' },
-  { src: `/hero-2.jpg?v=${HERO_IMAGE_VERSION}`, alt: 'Woman in burgundy maxi dress at House of K' },
-  { src: `/hero-3.jpg?v=${HERO_IMAGE_VERSION}`, alt: 'Woman in beige dress shopping at House of K' },
+  { src: `/hero.jpg?v=${HERO_IMAGE_VERSION}`, alt: 'Woman browsing trendy fashion at Covered by OH boutique' },
+  { src: `/hero-2.jpg?v=${HERO_IMAGE_VERSION}`, alt: 'Woman in burgundy maxi dress at Covered by OH' },
+  { src: `/hero-3.jpg?v=${HERO_IMAGE_VERSION}`, alt: 'Woman in beige dress shopping at Covered by OH' },
 ] as const;
 
 export const SOCIAL_INSTAGRAM = 'https://instagram.com/houseofk';
 export const SOCIAL_TIKTOK = 'https://tiktok.com/@houseofk';
 export const SOCIAL_SNAPCHAT = 'https://snapchat.com/add/houseofk';
 
-export const DEFAULT_PRODUCT_BRAND = 'House of K';
-export const CATALOG_PDF_PREFIX = 'house-of-k-catalog';
+export const DEFAULT_PRODUCT_BRAND = 'Covered by OH';
+export const CATALOG_PDF_PREFIX = 'covered-by-oh-catalog';
 
 export const FEATURED_BENEFITS = [
   { label: 'Weekly', title: 'New Drops Every Week' },
@@ -76,7 +76,7 @@ export const CUSTOMER_REVIEWS = [
 
 export const ABOUT_HEADLINE = 'Confidence Starts With What You Wear';
 export const ABOUT_BODY =
-  "House of K is a women's fashion brand dedicated to helping women look good, feel confident, and express their personal style through fashion. Based in Ofaakor, Kasoa, we carefully curate trendy and stylish pieces for women who love staying ahead of fashion trends.";
+  "Covered by OH is a women's fashion brand dedicated to helping women look good, feel confident, and express their personal style through fashion. Based in Ofaakor, Kasoa, we carefully curate trendy and stylish pieces for women who love staying ahead of fashion trends.";
 
 export const BRAND_COLORS = {
   plum: '#4A2C3D',

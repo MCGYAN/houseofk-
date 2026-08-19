@@ -13,7 +13,7 @@ export const SEO_KEYWORDS = [
   "women's fashion Ghana",
   'trendy outfits Kasoa',
   'affordable fashion Ghana',
-  'House of K',
+  'Covered by OH',
   BUSINESS_CITY,
   BUSINESS_COUNTRY,
 ].filter(Boolean);
