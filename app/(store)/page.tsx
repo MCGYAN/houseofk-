@@ -15,7 +15,6 @@ import HeroImageSlider from '@/components/HeroImageSlider';
 import MockCategoryCard from '@/components/MockCategoryCard';
 import MockProductCard from '@/components/MockProductCard';
 import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
-import NewsletterSection from '@/components/NewsletterSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
 export default function Home() {
@@ -155,15 +154,6 @@ export default function Home() {
               Learn more <i className="ri-arrow-right-line" />
             </Link>
           </AnimatedSection>
-        </div>
-      </section>
-
-      {/* SECTION 7 — NEWSLETTER */}
-      <section className="py-16 md:py-20 bg-brand-cream">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="glass-frosted rounded-3xl p-8 md:p-12">
-            <NewsletterSection />
-          </div>
         </div>
       </section>
     </main>
