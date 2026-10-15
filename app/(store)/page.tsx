@@ -5,7 +5,6 @@ import {
   HERO_HEADLINE,
   HERO_SUBHEADLINE,
   HERO_SLIDES,
-  FEATURED_BENEFITS,
   CUSTOMER_REVIEWS,
   ABOUT_HEADLINE,
   ABOUT_BODY,
@@ -65,42 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 2 — TRUST STRIP (tablet & desktop only) */}
-      <section className="hidden md:block py-10 md:py-14 bg-brand-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-2xl glass-frosted overflow-hidden">
-            <div
-              className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-rose/60 to-transparent"
-              aria-hidden
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-brand-rose/15">
-              {FEATURED_BENEFITS.map((benefit, i) => (
-                <div
-                  key={benefit.title}
-                  className="group relative px-6 py-8 md:px-8 md:py-10 text-center"
-                >
-                  <span
-                    className={`block font-serif text-2xl md:text-3xl tabular-nums mb-3 transition-colors duration-300 ${
-                      i === 0 ? 'text-brand-sage/70 group-hover:text-brand-sage' : 'text-brand-rose/25 group-hover:text-brand-rose/50'
-                    }`}
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className="block w-6 h-px bg-brand-rose/50 mx-auto mb-4 group-hover:w-10 transition-all duration-300" />
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-rose mb-2">
-                    {benefit.label}
-                  </p>
-                  <p className="font-serif text-base md:text-lg text-brand-plum leading-snug">
-                    {benefit.title}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 3 — SHOP BY CATEGORY */}
+      {/* SECTION 2 — SHOP BY CATEGORY */}
       <section id="shop-by-category" className="py-16 md:py-24 bg-brand-cream scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12 md:mb-16">

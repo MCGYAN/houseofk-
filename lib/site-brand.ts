@@ -53,13 +53,6 @@ export const SOCIAL_SNAPCHAT = 'https://snapchat.com/add/houseofk';
 export const DEFAULT_PRODUCT_BRAND = 'Covered by OH';
 export const CATALOG_PDF_PREFIX = 'covered-by-oh-catalog';
 
-export const FEATURED_BENEFITS = [
-  { label: 'Weekly', title: 'New Drops Every Week' },
-  { label: 'Nationwide', title: 'Fast Delivery Across Ghana' },
-  { label: 'Curated', title: "Affordable Fashion You'll Love" },
-  { label: 'Secure', title: 'Secure Payments' },
-] as const;
-
 export const SHOP_CATEGORIES = [
   { label: 'Dresses', href: '/shop?category=dresses' },
   { label: 'Two Piece Sets', href: '/shop?category=two-piece-sets' },
